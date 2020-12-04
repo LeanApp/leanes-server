@@ -43,7 +43,6 @@ export default (Module) => {
     }
 
     @method async handleNotification<T = ?any>(note: NotificationInterface<T>): Promise<void> {
-      console.log('>?>?>handleNotification', note.getName());
       switch (note.getName()) {
         case (CONNECT_MODULE_TO_SHELL):
           this.send(
@@ -67,7 +66,6 @@ export default (Module) => {
     }
 
     @method async handlePipeMessage(msg: PipeMessageInterface): Promise<void> {
-      console.log('>?>?>handlePipeMessage', msg);
       return;
     }
 
@@ -81,7 +79,6 @@ export default (Module) => {
       // The STDLOG pipe from the shell to the logger
       this._junction.registerPipe(STDLOG, OUTPUT, Pipe.new());
       this.send(CONNECT_SHELL_TO_LOGGER, this._junction);
-      console.log('GGFG00 ShellJunctionMediator', this.listNotificationInterests());
     }
 
     constructor() {

@@ -38,9 +38,7 @@ export default (Module) => {
     }
 
     @method execute<T = ?any>(note: NotificationInterface<T>): void {
-      console.log('StartupCommand execute()');
       super.execute(note);
-      console.log('StartupCommand execute()--');
       this.facade.removeCommand(STARTUP);
       this.send(STARTUP_COMPLETE);
     }

@@ -17,7 +17,7 @@ import type { NotificationInterface } from '../interfaces/NotificationInterface'
 
 export default (Module) => {
   const {
-    MIGRATE, ROLLBACK, MAKE_REQUEST,
+    MIGRATE, ROLLBACK,
     Command,
     initialize, partOf, meta, method, nameBy
   } = Module.NS;
@@ -29,10 +29,8 @@ export default (Module) => {
     @meta static object = {};
 
     @method execute<T = ?any>(note: NotificationInterface<T>): void {
-      console.log('PrepareControllerCommand execute()');
       this.facade.addCommand(MIGRATE, 'MigrateCommand');
       this.facade.addCommand(ROLLBACK, 'RollbackCommand');
-      this.facade.addCommand(MAKE_REQUEST, 'serverScript');
     }
   }
 }

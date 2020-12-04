@@ -18,7 +18,9 @@ import type { ApplicationInterface } from '../interfaces/ApplicationInterface';
 
 export default (Module) => {
   const {
-    APPLICATION_PROXY, CONFIGURATION, MIGRATIONS_ADAPTER, REQUEST_RESULTS_ADAPTER, MIGRATIONS, REQUEST_RESULTS,
+    APPLICATION_PROXY, CONFIGURATION,
+    MIGRATIONS_ADAPTER, REQUEST_RESULTS_ADAPTER,
+    MIGRATIONS, REQUEST_RESULTS, APPLICATION_ROUTER,
     Command,
     initialize, partOf, meta, method, nameBy
   } = Module.NS;
@@ -30,7 +32,6 @@ export default (Module) => {
     @meta static object = {};
 
     @method execute<T = ?any>(note: NotificationInterface<T>): void {
-      console.log('PrepareModelCommand execute()');
       const app: ApplicationInterface = note.getBody();
       this.facade.addProxy(APPLICATION_PROXY, 'ApplicationProxy', app.initialState);
       this.facade.addProxy(CONFIGURATION, 'MainConfiguration', this.Module.NS.ROOT);
@@ -44,6 +45,7 @@ export default (Module) => {
         delegate: 'RequestResultRecord',
         adapter: REQUEST_RESULTS_ADAPTER
       });
+      this.facade.addProxy(APPLICATION_ROUTER, 'ApplicationRouter');
     }
   }
 }

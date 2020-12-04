@@ -8,14 +8,12 @@
 // WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
 // the specific language governing rights and limitations under the License.
 
-console.log('>>>>QQQQ 888');
-
 export default (Module) => {
   const {
     APPLICATION_PROXY,
     Pipes,
     Application,
-    MigratifyApplicationMixin,
+    MigratifyApplicationMixin, ContextifyApplicationMixin,
     initialize, partOf, meta, property, method, nameBy, mixin,
     Utils: { _ }
   } = Module.NS;
@@ -27,6 +25,7 @@ export default (Module) => {
 
   @initialize
   @partOf(Module)
+  @mixin(ContextifyApplicationMixin)
   @mixin(MigratifyApplicationMixin)
   class MainApplication extends Application {
     @nameBy static  __filename = __filename;
@@ -53,24 +52,15 @@ export default (Module) => {
     }
 
     constructor(data: ?(Symbol | object)) {
-      console.log('>>>>QQQQ 999');
       const { ApplicationFacade } = Module.NS;
       const symbol = _.isSymbol(data)
         ? data
         : null;
-      console.log('>>>>QQQQ 1010');
       super(Module.name, ApplicationFacade, symbol);
-      console.log('>>>>QQQQ 1010+1');
       this.dispatch = this.sendEvent.bind(this);
-      console.log('>>>>QQQQ 1010+2');
       if (!_.isSymbol(data) && _.isObject(data)) {
-        console.log('>>>>QQQQ 1010+3');
         this.initialState = data;
-        console.log('>>>>QQQQ 1010+4');
       }
     }
   }
-
-  // console.log('><MMMMMMMMM ?? MainApplication, MainApplication', Module.name, Module.NS,  Module.NS.MainApplication);
 }
-console.log('>>>>QQQQ 888+');

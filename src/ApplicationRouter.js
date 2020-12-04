@@ -15,20 +15,20 @@
 
 export default (Module) => {
   const {
-    Mediator,
-    ApplicationMediatorMixin,
-    MigratifyApplicationMediatorMixin,
-    ContextifyApplicationMediatorMixin,
-    initialize, partOf, meta, nameBy, method, property, mixin
+    Router,
+    initialize, partOf, meta, method, nameBy,
   } = Module.NS;
 
   @initialize
   @partOf(Module)
-  @mixin(ContextifyApplicationMediatorMixin)
-  @mixin(MigratifyApplicationMediatorMixin)
-  @mixin(ApplicationMediatorMixin)
-  class ApplicationMediator extends Mediator {
+  class ApplicationRouter extends Router {
     @nameBy static  __filename = __filename;
     @meta static object = {};
+
+    @method map() {
+      this.resource('test2', function () {
+        this.resource('test2');
+      });
+    }
   }
 }

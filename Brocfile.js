@@ -24,6 +24,12 @@ const devJS = replacer(new WatchedDir(appRoot), {
   }, {
     match: '__MongoAddon__',
     replacement: '@leansdk/leanes-mongo-addon/lib/index.dev',
+  }, {
+    match: '__RestfulAddon__',
+    replacement: '@leansdk/leanes-restful-addon/lib/index.dev',
+  }, {
+    match: '__SwaggerAddon__',
+    replacement: '@leansdk/leanes-swagger-addon/lib/index.dev',
   },]
 });
 const dev = esTranspiler(devJS, {
@@ -65,6 +71,12 @@ const prodJS = replacer(appRoot, {
   }, {
     match: '__MongoAddon__',
     replacement: '@leansdk/leanes-mongo-addon',
+  }, {
+    match: '__RestfulAddon__',
+    replacement: '@leansdk/leanes-restful-addon',
+  }, {
+    match: '__SwaggerAddon__',
+    replacement: '@leansdk/leanes-swagger-addon',
   },]
 });
 const prod = esTranspiler(prodJS, {

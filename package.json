@@ -87,6 +87,7 @@
     "@leansdk/leanes-fs-utils-addon": "https://github.com/LeanSDK/leanes-fs-utils-addon.git#develop",
     "@leansdk/leanes-mapper-addon": "https://github.com/LeanSDK/leanes-mapper-addon.git#develop",
     "@leansdk/leanes-mongo-addon": "https://github.com/LeanSDK/leanes-mongo-addon.git",
+    "@leansdk/leanes-restful-addon": "https://github.com/LeanSDK/leanes-restful-addon.git#develop",
     "commander": "^6.2.0",
     "cron": "1.8.2",
     "nodemon": "1.19.4",

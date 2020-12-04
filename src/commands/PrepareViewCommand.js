@@ -18,7 +18,7 @@ import type { ApplicationInterface } from '../interfaces/ApplicationInterface';
 
 export default (Module) => {
   const {
-    APPLICATION_MEDIATOR, SHELL, LOGGER_MODULE, SIGNALS_GENERATOR,
+    APPLICATION_MEDIATOR, SHELL, LOGGER_MODULE, HTTP_MEDIATOR,
     Command,
     initialize, partOf, meta, method, nameBy
   } = Module.NS;
@@ -30,7 +30,6 @@ export default (Module) => {
     @meta static object = {};
 
     @method execute<T = ?any>(note: NotificationInterface<T>): void {
-      console.log('PrepareViewCommand execute()');
       const app: ApplicationInterface = note.getBody();
 
       this.facade.addMediator(LOGGER_MODULE, 'LoggerModuleMediator');
@@ -42,8 +41,8 @@ export default (Module) => {
       this.facade.activateMediator(SHELL);
 
       if (!app.isLightweight) {
-        this.facade.addMediator(SIGNALS_GENERATOR, 'SignalsMediator');
-        this.facade.activateMediator(SIGNALS_GENERATOR);
+        this.facade.addMediator(HTTP_MEDIATOR, 'HttpMediator');
+        this.facade.activateMediator(HTTP_MEDIATOR);
       }
     }
   }

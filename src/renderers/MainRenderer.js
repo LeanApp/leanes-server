@@ -15,19 +15,15 @@
 
 export default (Module) => {
   const {
-    Mediator,
-    ApplicationMediatorMixin,
-    MigratifyApplicationMediatorMixin,
-    ContextifyApplicationMediatorMixin,
-    initialize, partOf, meta, nameBy, method, property, mixin
+    Renderer,
+    CrudRendererMixin,
+    initialize, partOf, meta, nameBy, mixin,
   } = Module.NS;
 
   @initialize
   @partOf(Module)
-  @mixin(ContextifyApplicationMediatorMixin)
-  @mixin(MigratifyApplicationMediatorMixin)
-  @mixin(ApplicationMediatorMixin)
-  class ApplicationMediator extends Mediator {
+  @mixin(CrudRendererMixin)
+  class MainRenderer extends Renderer {
     @nameBy static  __filename = __filename;
     @meta static object = {};
   }

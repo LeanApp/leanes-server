@@ -24,15 +24,5 @@ export default (Module) => {
   class ApplicationProxy extends Proxy {
     @nameBy static  __filename = __filename;
     @meta static object = {};
-
-    @method onRegister() {
-      console.log('ApplicationProxy registered');
-      super.onRegister();
-    }
-
-    @method async onRemove(): Promise<void> {
-      await super.onRemove();
-
-    }
   }
 }

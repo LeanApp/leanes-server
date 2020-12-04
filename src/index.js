@@ -13,8 +13,6 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with leanes-server.  If not, see <https://www.gnu.org/licenses/>.
 
-console.log('>>>>QQQQ 000-+911*');
-
 import LeanES from '__LeanES__';
 import FsUtilsAddon from '__FsUtilsAddon__';
 import ConfigurableAddon from '__ConfigurableAddon__';
@@ -22,29 +20,32 @@ import {
   default as MapperAddon, MigratableModule, loadMigrations
 } from '__MapperAddon__';
 import MongoAddon from '__MongoAddon__';
+import {
+  default as RestfulAddon, TemplatableModule, loadTemplates
+} from '__RestfulAddon__';
+import SwaggerAddon from '__SwaggerAddon__';
 
 const { initialize, meta, nameBy, resolver, constant, plugin, loadFiles } = LeanES.NS;
 
-console.log('>>>>QQQQ 111+');
-
 @initialize
 @loadFiles
+@loadTemplates
 @loadMigrations
+@plugin(SwaggerAddon)
+@plugin(TemplatableModule)
+@plugin(RestfulAddon)
 @plugin(MongoAddon)
 @plugin(MigratableModule)
 @plugin(MapperAddon)
 @plugin(ConfigurableAddon)
 @plugin(FsUtilsAddon)
 @resolver(require, name => require(name))
-class serverApp extends LeanES {
-  @nameBy static  __filename = 'serverApp';
+class ServerApp extends LeanES {
   @meta static object = {};
   @constant ROOT = __dirname;
-  @constant MAKE_REQUEST = 'MAKE_REQUEST';
   @constant MIGRATIONS_ADAPTER = 'MigrationsAdapter';
   @constant REQUEST_RESULTS_ADAPTER = 'RequestResultsAdapter';
   @constant REQUEST_RESULTS = 'RequestResultsCollection';
-  @constant SIGNALS_GENERATOR = 'SignalsGenerator';
 }
 
-export default serverApp;
+export default ServerApp;
