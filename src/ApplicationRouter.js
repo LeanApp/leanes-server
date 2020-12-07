@@ -13,10 +13,13 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with leanes-server.  If not, see <https://www.gnu.org/licenses/>.
 
+import type { RouterInterface } from '../interfaces/RouterInterface';
+
 export default (Module) => {
   const {
+    SWAGGER_ROUTER,
     Router,
-    initialize, partOf, meta, method, nameBy,
+    initialize, partOf, meta, method, property, nameBy, inject,
   } = Module.NS;
 
   @initialize
@@ -25,9 +28,19 @@ export default (Module) => {
     @nameBy static  __filename = __filename;
     @meta static object = {};
 
+    @inject(`Factory<${SWAGGER_ROUTER}>`)
+    @property _swaggerFactory: () => RouterInterface;
+
+    @method externals() {
+      return [this._swaggerFactory()]
+    }
+
     @method map() {
-      this.resource('test2', function () {
-        this.resource('test2');
+      this.get('/info', {to: 'itself#info', recordName: null})
+      this.resource('users', {except: ['delete']}, function () {
+        this.post('/signup', {to: 'users#signup', template: 'users/signup', recordName: null})
+        this.post('/authorize', {to: 'users#authorize', template: 'users/authorize', recordName: null})
+        this.get('/signout', {to: 'users#signout', template: 'users/signout', recordName: null})
       });
     }
   }

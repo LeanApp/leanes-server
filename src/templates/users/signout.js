@@ -14,25 +14,7 @@
 // along with leanes-server.  If not, see <https://www.gnu.org/licenses/>.
 
 export default (Module) => {
-  const {
-    Resource,
-    BodyParseMixin,
-    CheckApiVersionResourceMixin,
-    CheckSchemaVersionResourceMixin,
-    ContextifyResourceExecutionMixin,
-    EditableResourceMixin,
-    initialize, partOf, meta, method, nameBy, mixin,
-  } = Module.NS;
-
-  @initialize
-  @partOf(Module)
-  @mixin(EditableResourceMixin)
-  @mixin(ContextifyResourceExecutionMixin)
-  @mixin(CheckSchemaVersionResourceMixin)
-  @mixin(CheckApiVersionResourceMixin)
-  @mixin(BodyParseMixin)
-  class TestResource extends Resource {
-    @nameBy static  __filename = __filename;
-    @meta static object = {};
-  }
+  Module.defineTemplate(__filename, (resource, action, aoData) => ({
+    success: true
+  }))
 }

@@ -44,8 +44,10 @@ class ServerApp extends LeanES {
   @meta static object = {};
   @constant ROOT = __dirname;
   @constant MIGRATIONS_ADAPTER = 'MigrationsAdapter';
-  @constant REQUEST_RESULTS_ADAPTER = 'RequestResultsAdapter';
-  @constant REQUEST_RESULTS = 'RequestResultsCollection';
+  @constant USERS_ADAPTER = 'UsersAdapter';
+  @constant USERS = 'UsersCollection';
+  @constant SESSIONS_ADAPTER = 'SessionsAdapter';
+  @constant SESSIONS = 'SessionsCollection';
 }
 
 export default ServerApp;

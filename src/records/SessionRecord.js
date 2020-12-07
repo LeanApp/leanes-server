@@ -10,13 +10,11 @@ export default (Module) => {
   @initialize
   @partOf(Module)
   @mixin(TimestampsRecordMixin)
-  class RequestResultRecord extends Record {
+  class SessionRecord extends Record {
     @nameBy static  __filename = __filename;
     @meta static object = {};
 
-    @attribute({ type: 'string' }) body;
-    @attribute({ type: 'json' }) headers;
-    @attribute({ type: 'number' }) status;
-    @attribute({ type: 'string' }) message;
+    @attribute({ type: 'string' }) uid;
+    @attribute({ type: 'date' }) expires;
   }
 }

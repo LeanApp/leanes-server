@@ -8,21 +8,20 @@ export default (Module) => {
 
   @initialize
   @partOf(Module)
-  class CreateRequestResultsMigration extends BaseMigration {
+  class CreateSessionsMigration extends BaseMigration {
     @meta static object = {};
     @method static change() {
-      const name = 'request_results'
+      const name = 'sessions'
       this.createCollection(name)
       this.addField(name, 'id', 'string')
       this.addField(name, 'type', 'string')
       this.addTimestamps(name)
 
-      this.addField(name, 'body', 'string')
-      this.addField(name, 'headers', 'json')
-      this.addField(name, 'status', 'number')
-      this.addField(name, 'message', 'string')
+      this.addField(name, 'uid', 'string')
+      this.addField(name, 'expires', 'date')
 
       this.addIndex(name, ['id'], {type: 'hash', unique: true})
+      this.addIndex(name, ['uid'], {type: 'hash'})
     }
   }
 }

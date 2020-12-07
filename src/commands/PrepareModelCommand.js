@@ -19,8 +19,8 @@ import type { ApplicationInterface } from '../interfaces/ApplicationInterface';
 export default (Module) => {
   const {
     APPLICATION_PROXY, CONFIGURATION,
-    MIGRATIONS_ADAPTER, REQUEST_RESULTS_ADAPTER,
-    MIGRATIONS, REQUEST_RESULTS, APPLICATION_ROUTER,
+    MIGRATIONS_ADAPTER, USERS_ADAPTER, SESSIONS_ADAPTER,
+    MIGRATIONS, USERS, SESSIONS, APPLICATION_ROUTER,
     Command,
     initialize, partOf, meta, method, nameBy
   } = Module.NS;
@@ -36,14 +36,19 @@ export default (Module) => {
       this.facade.addProxy(APPLICATION_PROXY, 'ApplicationProxy', app.initialState);
       this.facade.addProxy(CONFIGURATION, 'MainConfiguration', this.Module.NS.ROOT);
       this.facade.addAdapter(MIGRATIONS_ADAPTER, 'MongoAdapter');
-      this.facade.addAdapter(REQUEST_RESULTS_ADAPTER, 'MongoAdapter');
+      this.facade.addAdapter(USERS_ADAPTER, 'MongoAdapter');
+      this.facade.addAdapter(SESSIONS_ADAPTER, 'MongoAdapter');
       this.facade.addProxy(MIGRATIONS, 'MigrationsCollection', {
         delegate: 'BaseMigration',
         adapter: MIGRATIONS_ADAPTER
       });
-      this.facade.addProxy(REQUEST_RESULTS, 'MainCollection', {
-        delegate: 'RequestResultRecord',
-        adapter: REQUEST_RESULTS_ADAPTER
+      this.facade.addProxy(USERS, 'MainCollection', {
+        delegate: 'UserRecord',
+        adapter: USERS_ADAPTER
+      });
+      this.facade.addProxy(SESSIONS, 'MainCollection', {
+        delegate: 'SessionRecord',
+        adapter: SESSIONS_ADAPTER
       });
       this.facade.addProxy(APPLICATION_ROUTER, 'ApplicationRouter');
     }
