@@ -41,7 +41,7 @@ export default (Module) => {
       this.facade.activateMediator(SHELL);
 
       if (!app.isLightweight) {
-        this.facade.addMediator(HTTP_MEDIATOR, 'HttpMediator');
+        this.facade.addMediator(HTTP_MEDIATOR, 'ServerMediator');
         this.facade.activateMediator(HTTP_MEDIATOR);
       }
     }

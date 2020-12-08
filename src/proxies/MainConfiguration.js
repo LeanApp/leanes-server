@@ -3,7 +3,7 @@
 export default (Module) => {
   const {
     Configuration,
-    initialize, partOf, meta, property, nameBy, mixin
+    initialize, partOf, meta, property, nameBy
   } = Module.NS;
 
   @initialize

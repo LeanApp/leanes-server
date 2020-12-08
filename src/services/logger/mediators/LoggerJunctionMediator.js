@@ -47,18 +47,15 @@ export default (Module) => {
             const tee = this._junction.retrievePipe(STDIN);
             tee.connectInput(pipe);
           } else {
-            console.log('::::handleNotification 1', note);
             super.handleNotification(note);
           }
           break;
         default:
-          console.log('::::handleNotification 2', note);
           super.handleNotification(note);
       }
     }
 
     @method async handlePipeMessage(msg: PipeMessageInterface): Promise<void> {
-      console.log('::::handlePipeMessage', msg);
       this.send(LOG_MSG, msg);
     }
 
@@ -69,7 +66,6 @@ export default (Module) => {
       filter.connect(PipeListener.new(this, this.handlePipeMessage));
       teeMerge.connect(filter);
       this._junction.registerPipe(STDIN, INPUT, teeMerge);
-      console.log('LL))M LoggerJunctionMediator', this.listNotificationInterests());
     }
 
     constructor() {

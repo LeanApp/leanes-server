@@ -13,27 +13,23 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with leanes-server.  If not, see <https://www.gnu.org/licenses/>.
 
-import type { NotificationInterface } from '../interfaces/NotificationInterface';
-
 export default (Module) => {
   const {
-    MIGRATE, ROLLBACK,
-    Command,
-    initialize, partOf, meta, method, nameBy
+    JSON_RENDERER,
+    HttpMediator,
+    initialize, partOf, meta, nameBy, method, property, mixin
   } = Module.NS;
 
   @initialize
   @partOf(Module)
-  class PrepareControllerCommand extends Command {
+  class ServerMediator extends HttpMediator {
     @nameBy static  __filename = __filename;
     @meta static object = {};
 
-    @method execute<T = ?any>(note: NotificationInterface<T>): void {
-      this.facade.addCommand(MIGRATE, 'MigrateCommand');
-      this.facade.addCommand(ROLLBACK, 'RollbackCommand');
-      this.facade.addCommand('ItselfResource');
-      this.facade.addCommand('UsersResource');
-      // this.facade.addCommand('SwaggerResource');
+    // @property htmlRendererName: string = JSON_RENDERER;
+
+    @property get responseFormats(): string[] {
+      return ['application/octet-stream', 'json', 'html', 'xml', 'atom', 'text'];
     }
   }
 }

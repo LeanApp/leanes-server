@@ -5,7 +5,7 @@
   "license": "AGPL-3.0",
   "scripts": {
     "watch": "broccoli serve --output-path dev",
-    "dev": "nodemon -L --delay 10ms --watch dev/ --require source-map-support/register --trace-warnings index.js",
+    "dev": "nodemon -L --delay 10ms --watch dev/ --require source-map-support/register --trace-warnings --inspect=0.0.0.0:9229 index.js",
     "dev_build": "broccoli build --output-path dev",
     "dev_migrate": "ENV=development node --require source-map-support/register --trace-warnings migrate",
     "dev_rollback": "ENV=development node --require source-map-support/register --trace-warnings rollback",
@@ -72,6 +72,7 @@
     "broccoli-babel-transpiler": "7.8.0",
     "broccoli-cli": "1.0.0",
     "broccoli-merge-trees": "^4.2.0",
+    "broccoli-source": "3.0.0",
     "broccoli-string-replace": "0.1.2",
     "chai": "4.2.0",
     "flow-runtime": "^0.17.0",
@@ -92,6 +93,7 @@
     "@leansdk/leanes-swagger-addon": "https://github.com/LeanSDK/leanes-swagger-addon.git#develop",
     "commander": "^6.2.0",
     "cron": "1.8.2",
+    "json-joi-converter": "^17.2.1-a",
     "nodemon": "1.19.4",
     "pm2": "^3.5.1"
   },

@@ -29,7 +29,7 @@ const devJS = replacer(new WatchedDir(appRoot), {
     replacement: '@leansdk/leanes-restful-addon/lib/index.dev',
   }, {
     match: '__SwaggerAddon__',
-    replacement: '@leansdk/leanes-swagger-addon/lib/index.dev',
+    replacement: '@leansdk/leanes-swagger-addon/dev',
   },]
 });
 const dev = esTranspiler(devJS, {

@@ -24,6 +24,7 @@ type infoResult = {
 export default (Module) => {
   const {
     Resource,
+    ContextifyResourceExecutionMixin,
     CorsMiddlewareMixin, ConfigurableMixin,
     initialize, partOf, nameBy, meta, action, chains, mixin,
   } = Module.NS;
@@ -38,6 +39,7 @@ export default (Module) => {
     this.initialHook('checkSchemaVersion');
   })
   @partOf(Module)
+  @mixin(ContextifyResourceExecutionMixin)
   @mixin(CorsMiddlewareMixin)
   @mixin(ConfigurableMixin)
   class ItselfResource extends Resource {
@@ -47,6 +49,7 @@ export default (Module) => {
     @action async cors(): Promise<void>{}
 
     @action async info(): Promise<infoResult> {
+      console.log('dfsd82d');
       const {
         name,
         description,

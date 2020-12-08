@@ -21,6 +21,7 @@ export default (Module) => {
     APPLICATION_PROXY, CONFIGURATION,
     MIGRATIONS_ADAPTER, USERS_ADAPTER, SESSIONS_ADAPTER,
     MIGRATIONS, USERS, SESSIONS, APPLICATION_ROUTER,
+    SWAGGER_ROUTER, SWAGGER_GATEWAY,
     Command,
     initialize, partOf, meta, method, nameBy
   } = Module.NS;
@@ -51,6 +52,8 @@ export default (Module) => {
         adapter: SESSIONS_ADAPTER
       });
       this.facade.addProxy(APPLICATION_ROUTER, 'ApplicationRouter');
+      // this.facade.addProxy(SWAGGER_ROUTER, 'SwaggerRouter')
+      // this.facade.addProxy(SWAGGER_GATEWAY, 'SwaggerGateway')
     }
   }
 }
