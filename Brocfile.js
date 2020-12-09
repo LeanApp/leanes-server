@@ -88,6 +88,10 @@ const prod = esTranspiler(prodJS, {
   ],
   plugins: [
     "@babel/plugin-syntax-flow",
+    ["flow-runtime", {
+      "assert": false,
+      "annotate": false
+    }],
     "@babel/plugin-transform-flow-strip-types",
     ["@babel/plugin-proposal-decorators", { "legacy": true }],
     "babel-plugin-parameter-decorator",

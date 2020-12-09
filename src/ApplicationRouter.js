@@ -31,17 +31,12 @@ export default (Module) => {
     @inject(`Factory<${SWAGGER_ROUTER}>`)
     @property _swaggerFactory: () => RouterInterface;
 
-    // @method externals() {
-    //   return [this._swaggerFactory()]
-    // }
+    @method externals() {
+      return [this._swaggerFactory()]
+    }
 
     @method map() {
       this.get('/info', {to: 'itself#info', recordName: null})
-      this.namespace('swagger', {module: '', prefix: "swagger"}, function () {
-        this.get('/', {to: 'swagger#index', recordName: null})
-        this.get('/swagger.json', {to: 'swagger#spec', recordName: null})
-        this.get('/*', {to: 'swagger#static', recordName: null})
-      })
       this.resource('users', {except: ['delete']}, function () {
         this.post('/signup', {to: 'users#signup', template: 'users/signup', recordName: null})
         this.post('/authorize', {to: 'users#authorize', template: 'users/authorize', recordName: null})

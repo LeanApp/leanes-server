@@ -18,13 +18,11 @@ export default (Module) => {
     Mediator,
     ApplicationMediatorMixin,
     MigratifyApplicationMediatorMixin,
-    ContextifyApplicationMediatorMixin,
     initialize, partOf, meta, nameBy, method, property, mixin
   } = Module.NS;
 
   @initialize
   @partOf(Module)
-  @mixin(ContextifyApplicationMediatorMixin)
   @mixin(MigratifyApplicationMediatorMixin)
   @mixin(ApplicationMediatorMixin)
   class ApplicationMediator extends Mediator {

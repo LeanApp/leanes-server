@@ -30,7 +30,6 @@ export default (Module) => {
     ConfigurableMixin, BodyParseMixin,
     CheckSchemaVersionResourceMixin,
     CheckSessionsMixin,
-    ContextifyResourceExecutionMixin,
     initialize, partOf, meta, method, property, nameBy, mixin, inject,
     Utils: { _, statuses }
   } = Module.NS;
@@ -45,6 +44,7 @@ export default (Module) => {
   @chains([
     'list', 'detail', 'create', 'update', 'signup', 'signout', 'authorize'
   ], function () {
+    this.initialHook('checkSchemaVersion');
     this.initialHook('parseBody', {
       only: ['create', 'update', 'signup', 'authorize']
     });
@@ -53,7 +53,6 @@ export default (Module) => {
     });
   })
   @partOf(Module)
-  @mixin(ContextifyResourceExecutionMixin)
   @mixin(CheckSessionsMixin)
   @mixin(CheckSchemaVersionResourceMixin)
   @mixin(BodyParseMixin)
