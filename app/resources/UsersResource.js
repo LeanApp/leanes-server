@@ -53,7 +53,7 @@ const {
 } = process.env;
 
 var _default = Module => {
-  var _dec, _dec2, _dec3, _dec4, _dec5, _dec6, _dec7, _class, _class2, _init, _init2, _descriptor, _class3, _temp;
+  var _dec, _dec2, _dec3, _dec4, _dec5, _dec6, _dec7, _dec8, _class, _class2, _init, _init2, _descriptor, _class3, _temp;
 
   const {
     SESSIONS,
@@ -61,15 +61,17 @@ var _default = Module => {
     ConfigurableMixin,
     BodyParseMixin,
     CheckSchemaVersionResourceMixin,
+    CheckApiVersionResourceMixin,
     CheckSessionsMixin,
     initialize,
     partOf,
     meta,
-    method,
     property,
     nameBy,
     mixin,
     inject,
+    chains,
+    action,
     Utils: {
       _,
       statuses
@@ -81,6 +83,7 @@ var _default = Module => {
   const UNAUTHORIZED = statuses('unauthorized');
   const FORBIDDEN = statuses('forbidden');
   let UsersResource = (_dec = chains(['list', 'detail', 'create', 'update', 'signup', 'signout', 'authorize'], function () {
+    this.initialHook('checkApiVersion');
     this.initialHook('checkSchemaVersion');
     this.initialHook('parseBody', {
       only: ['create', 'update', 'signup', 'authorize']
@@ -88,7 +91,7 @@ var _default = Module => {
     this.initialHook('checkSession', {
       only: ['signout']
     });
-  }), _dec2 = partOf(Module), _dec3 = mixin(CheckSessionsMixin), _dec4 = mixin(CheckSchemaVersionResourceMixin), _dec5 = mixin(BodyParseMixin), _dec6 = mixin(ConfigurableMixin), _dec7 = inject(`Factory<${SESSIONS}>`), initialize(_class = _dec(_class = _dec2(_class = _dec3(_class = _dec4(_class = _dec5(_class = _dec6(_class = (_class2 = (_temp = _class3 = class UsersResource extends Resource {
+  }), _dec2 = partOf(Module), _dec3 = mixin(CheckSessionsMixin), _dec4 = mixin(CheckSchemaVersionResourceMixin), _dec5 = mixin(CheckApiVersionResourceMixin), _dec6 = mixin(BodyParseMixin), _dec7 = mixin(ConfigurableMixin), _dec8 = inject(`Factory<${SESSIONS}>`), initialize(_class = _dec(_class = _dec2(_class = _dec3(_class = _dec4(_class = _dec5(_class = _dec6(_class = _dec7(_class = (_class2 = (_temp = _class3 = class UsersResource extends Resource {
     get entityName() {
       return 'user';
     }
@@ -103,6 +106,8 @@ var _default = Module => {
     }
 
     async signup() {
+      console.log('signup');
+
       if (REGISTRATION_IS_ALLOWED == 'yes') {
         const payload = _.pick(this.context.request.body, ['email', 'password']);
 
@@ -115,6 +120,7 @@ var _default = Module => {
     }
 
     async signout() {
+      console.log('signout');
       const {
         sessionCookie,
         cookieDomain
@@ -150,6 +156,7 @@ var _default = Module => {
     }
 
     async authorize() {
+      console.log('authorize');
       const {
         username,
         password
@@ -300,12 +307,12 @@ var _default = Module => {
     initializer: function () {
       return _init2;
     }
-  }), _class2), (0, _applyDecoratedDescriptor2.default)(_class2.prototype, "entityName", [property], Object.getOwnPropertyDescriptor(_class2.prototype, "entityName"), _class2.prototype), _descriptor = (0, _applyDecoratedDescriptor2.default)(_class2.prototype, "_sessionsFactory", [_dec7, property], {
+  }), _class2), (0, _applyDecoratedDescriptor2.default)(_class2.prototype, "entityName", [property], Object.getOwnPropertyDescriptor(_class2.prototype, "entityName"), _class2.prototype), _descriptor = (0, _applyDecoratedDescriptor2.default)(_class2.prototype, "_sessionsFactory", [_dec8, property], {
     configurable: true,
     enumerable: true,
     writable: true,
     initializer: null
-  }), (0, _applyDecoratedDescriptor2.default)(_class2.prototype, "_sessions", [property], Object.getOwnPropertyDescriptor(_class2.prototype, "_sessions"), _class2.prototype), (0, _applyDecoratedDescriptor2.default)(_class2.prototype, "signup", [action], Object.getOwnPropertyDescriptor(_class2.prototype, "signup"), _class2.prototype), (0, _applyDecoratedDescriptor2.default)(_class2.prototype, "signout", [action], Object.getOwnPropertyDescriptor(_class2.prototype, "signout"), _class2.prototype), (0, _applyDecoratedDescriptor2.default)(_class2.prototype, "authorize", [action], Object.getOwnPropertyDescriptor(_class2.prototype, "authorize"), _class2.prototype)), _class2)) || _class) || _class) || _class) || _class) || _class) || _class) || _class);
+  }), (0, _applyDecoratedDescriptor2.default)(_class2.prototype, "_sessions", [property], Object.getOwnPropertyDescriptor(_class2.prototype, "_sessions"), _class2.prototype), (0, _applyDecoratedDescriptor2.default)(_class2.prototype, "signup", [action], Object.getOwnPropertyDescriptor(_class2.prototype, "signup"), _class2.prototype), (0, _applyDecoratedDescriptor2.default)(_class2.prototype, "signout", [action], Object.getOwnPropertyDescriptor(_class2.prototype, "signout"), _class2.prototype), (0, _applyDecoratedDescriptor2.default)(_class2.prototype, "authorize", [action], Object.getOwnPropertyDescriptor(_class2.prototype, "authorize"), _class2.prototype)), _class2)) || _class) || _class) || _class) || _class) || _class) || _class) || _class) || _class);
 };
 
 exports.default = _default;

@@ -12,16 +12,18 @@ export default (Module) => {
   const {
     JSON_RENDERER,
     HttpMediator,
+    ConfigurableMixin,
     initialize, partOf, meta, nameBy, method, property, mixin
   } = Module.NS;
 
   @initialize
   @partOf(Module)
+  @mixin(ConfigurableMixin)
   class ServerMediator extends HttpMediator {
     @nameBy static  __filename = __filename;
     @meta static object = {};
 
-    // @property htmlRendererName: string = JSON_RENDERER;
+    @property htmlRendererName: string = JSON_RENDERER;
 
     @property get responseFormats(): string[] {
       return ['application/octet-stream', 'json', 'html', 'xml', 'atom', 'text'];

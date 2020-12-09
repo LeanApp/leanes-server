@@ -60,23 +60,35 @@ var _default = Module => {
         to: 'itself#info',
         recordName: null
       });
-      this.resource('users', {
-        except: ['delete']
+      this.options('/*', {
+        to: 'itself#cors',
+        recordName: null
+      });
+      this.namespace('version', {
+        module: '',
+        prefix: ':v'
       }, function () {
-        this.post('/signup', {
-          to: 'users#signup',
-          template: 'users/signup',
-          recordName: null
-        });
-        this.post('/authorize', {
-          to: 'users#authorize',
-          template: 'users/authorize',
-          recordName: null
-        });
-        this.get('/signout', {
-          to: 'users#signout',
-          template: 'users/signout',
-          recordName: null
+        this.resource('users', {
+          except: 'delete'
+        }, function () {
+          this.post('/signup', {
+            to: 'users#signup',
+            at: 'collection',
+            template: 'users/signup',
+            recordName: null
+          });
+          this.post('/authorize', {
+            to: 'users#authorize',
+            at: 'collection',
+            template: 'users/authorize',
+            recordName: null
+          });
+          this.get('/signout', {
+            to: 'users#signout',
+            at: 'collection',
+            template: 'users/signout',
+            recordName: null
+          });
         });
       });
     }

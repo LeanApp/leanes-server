@@ -40,8 +40,7 @@ const {
   REGISTRATION_IS_ALLOWED,
   PUBLIC_KEY,
   PRIVATE_KEY,
-  SECRET,
-  DEFAULT_USERS
+  SECRET
 } = process.env;
 
 var _default = Module => {

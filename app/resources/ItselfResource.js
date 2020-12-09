@@ -24,6 +24,7 @@ var _default = Module => {
   var _dec, _dec2, _dec3, _dec4, _class, _class2, _init, _init2, _class3, _temp;
 
   const {
+    NON_RENDERABLE,
     Resource,
     CorsMiddlewareMixin,
     ConfigurableMixin,
@@ -40,7 +41,9 @@ var _default = Module => {
       only: ['cors']
     });
   }), _dec2 = partOf(Module), _dec3 = mixin(CorsMiddlewareMixin), _dec4 = mixin(ConfigurableMixin), initialize(_class = _dec(_class = _dec2(_class = _dec3(_class = _dec4(_class = (_class2 = (_temp = _class3 = class ItselfResource extends Resource {
-    async cors() {}
+    async cors() {
+      return NON_RENDERABLE;
+    }
 
     async info() {
       const {

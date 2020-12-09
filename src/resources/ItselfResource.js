@@ -18,6 +18,7 @@ type infoResult = {
 
 export default (Module) => {
   const {
+    NON_RENDERABLE,
     Resource,
     CorsMiddlewareMixin, ConfigurableMixin,
     initialize, partOf, nameBy, meta, action, chains, mixin,
@@ -38,7 +39,9 @@ export default (Module) => {
     @nameBy static __filename = __filename;
     @meta static object = {};
 
-    @action async cors(): Promise<void>{}
+    @action async cors(): Promise<typeof NON_RENDERABLE> {
+      return NON_RENDERABLE
+    }
 
     @action async info(): Promise<infoResult> {
       const {

@@ -29,8 +29,9 @@ export default (Module) => {
     Resource,
     ConfigurableMixin, BodyParseMixin,
     CheckSchemaVersionResourceMixin,
+    CheckApiVersionResourceMixin,
     CheckSessionsMixin,
-    initialize, partOf, meta, method, property, nameBy, mixin, inject,
+    initialize, partOf, meta, property, nameBy, mixin, inject, chains, action,
     Utils: { _, statuses }
   } = Module.NS;
 
@@ -44,6 +45,7 @@ export default (Module) => {
   @chains([
     'list', 'detail', 'create', 'update', 'signup', 'signout', 'authorize'
   ], function () {
+    this.initialHook('checkApiVersion');
     this.initialHook('checkSchemaVersion');
     this.initialHook('parseBody', {
       only: ['create', 'update', 'signup', 'authorize']
@@ -55,6 +57,7 @@ export default (Module) => {
   @partOf(Module)
   @mixin(CheckSessionsMixin)
   @mixin(CheckSchemaVersionResourceMixin)
+  @mixin(CheckApiVersionResourceMixin)
   @mixin(BodyParseMixin)
   @mixin(ConfigurableMixin)
   class UsersResource< D = RecordInterface > extends Resource {
@@ -72,6 +75,7 @@ export default (Module) => {
     }
 
     @action async signup() {
+      console.log('signup');
       if(REGISTRATION_IS_ALLOWED == 'yes'){
         const payload = _.pick(this.context.request.body, ['email', 'password']);
         const newUser = await this.collection.create(payload);
@@ -83,6 +87,7 @@ export default (Module) => {
     }
 
     @action async signout(): Promise<void> {
+      console.log('signout');
       const {
         sessionCookie,
         cookieDomain
@@ -122,6 +127,7 @@ export default (Module) => {
     }
 
     @action async authorize() {
+      console.log('authorize');
       const {
         username, password,
       } = this.context.request.body;

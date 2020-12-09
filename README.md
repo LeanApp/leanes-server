@@ -49,7 +49,12 @@ docker volume create --name=mongodb-data
 
 ```
 ./npm run dev_migrate -- --until 20201203183000_create_request_results_migration
+or
+./npm run dev_migrate
 ```
+
+## Swagger UI
+[link](http://192.168.2.3:3001/swagger/index.html)
 
 ## Additional information useful but not for deploy
 

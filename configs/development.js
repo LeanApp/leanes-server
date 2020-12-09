@@ -1,9 +1,4 @@
 module.exports = {
-  "url": {
-    "default": "https://www.google.com/",
-    "description": "URL for request",
-    "type": "string"
-  },
   "mongodb": {
     "default": {
       "host": "192.168.2.2",

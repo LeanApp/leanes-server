@@ -5,6 +5,10 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 exports.__esModule = true;
 exports.default = void 0;
 
+var _initializerDefineProperty2 = _interopRequireDefault(require("@babel/runtime/helpers/initializerDefineProperty"));
+
+var _initializerWarningHelper2 = _interopRequireDefault(require("@babel/runtime/helpers/initializerWarningHelper"));
+
 var _applyDecoratedDescriptor2 = _interopRequireDefault(require("@babel/runtime/helpers/applyDecoratedDescriptor"));
 
 var _flowRuntime = _interopRequireDefault(require("flow-runtime"));
@@ -19,11 +23,12 @@ var _flowRuntime = _interopRequireDefault(require("flow-runtime"));
 // WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
 // the specific language governing rights and limitations under the License.
 var _default = Module => {
-  var _dec, _class, _class2, _init, _init2, _class3, _temp;
+  var _dec, _dec2, _class, _class2, _init, _init2, _descriptor, _class3, _temp;
 
   const {
     JSON_RENDERER,
     HttpMediator,
+    ConfigurableMixin,
     initialize,
     partOf,
     meta,
@@ -32,8 +37,12 @@ var _default = Module => {
     property,
     mixin
   } = Module.NS;
-  let ServerMediator = (_dec = partOf(Module), initialize(_class = _dec(_class = (_class2 = (_temp = _class3 = class ServerMediator extends HttpMediator {
-    // @property htmlRendererName: string = JSON_RENDERER;
+  let ServerMediator = (_dec = partOf(Module), _dec2 = mixin(ConfigurableMixin), initialize(_class = _dec(_class = _dec2(_class = (_class2 = (_temp = _class3 = class ServerMediator extends HttpMediator {
+    constructor(...args) {
+      super(...args);
+      (0, _initializerDefineProperty2.default)(this, "htmlRendererName", _descriptor, this);
+    }
+
     get responseFormats() {
       return ['application/octet-stream', 'json', 'html', 'xml', 'atom', 'text'];
     }
@@ -52,7 +61,14 @@ var _default = Module => {
     initializer: function () {
       return _init2;
     }
-  }), _class2), (0, _applyDecoratedDescriptor2.default)(_class2.prototype, "responseFormats", [property], Object.getOwnPropertyDescriptor(_class2.prototype, "responseFormats"), _class2.prototype)), _class2)) || _class) || _class);
+  }), _class2), _descriptor = (0, _applyDecoratedDescriptor2.default)(_class2.prototype, "htmlRendererName", [property], {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    initializer: function () {
+      return JSON_RENDERER;
+    }
+  }), (0, _applyDecoratedDescriptor2.default)(_class2.prototype, "responseFormats", [property], Object.getOwnPropertyDescriptor(_class2.prototype, "responseFormats"), _class2.prototype)), _class2)) || _class) || _class) || _class);
 };
 
 exports.default = _default;
