@@ -27,7 +27,7 @@ export default (Module) => {
 
   Module.defineMixin(__filename, (BaseClass) => {
     return @initializeMixin
-    class Mixin extends BaseClass {
+    class Mixin< D = RecordInterface > extends BaseClass {
       @meta static object = {};
 
       @inject(`Factory<${SESSIONS}>`)

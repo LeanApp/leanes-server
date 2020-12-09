@@ -131,7 +131,7 @@ export default (Module) => {
       const {
         username, password,
       } = this.context.request.body;
-      const user = await this.collection.findBy({email: username});
+      const user = await this.collection.findBy({"@doc.email": username});
       if (user == null) {
         this.context.throw(UNAUTHORIZED, 'Credentials are incorrect')
       } else {

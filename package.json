@@ -104,6 +104,11 @@
       "description": "Admin email.",
       "type": "string",
       "default": "admin@leanes.com"
+    },
+    "adminPassword": {
+      "description": "Admin password.",
+      "type": "string",
+      "default": "0000"
     }
   },
   "devDependencies": {
