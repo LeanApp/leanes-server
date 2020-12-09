@@ -29,7 +29,6 @@ var _leanesSwaggerAddon = _interopRequireDefault(require("@leansdk/leanes-swagge
 
 var _dec, _dec2, _dec3, _dec4, _dec5, _dec6, _dec7, _dec8, _dec9, _class, _class2, _init, _descriptor, _descriptor2, _descriptor3, _descriptor4, _descriptor5, _descriptor6, _class3, _temp;
 
-// import SwaggerResource from './resources/SwaggerResource';
 const {
   initialize,
   meta,
@@ -38,8 +37,7 @@ const {
   constant,
   plugin,
   loadFiles
-} = _leanes.default.NS; // @SwaggerResource
-
+} = _leanes.default.NS;
 let ServerApp = (_dec = plugin(_leanesSwaggerAddon.default), _dec2 = plugin(_leanesRestfulAddon.TemplatableModule), _dec3 = plugin(_leanesRestfulAddon.default), _dec4 = plugin(_leanesMongoAddon.default), _dec5 = plugin(_leanesMapperAddon.MigratableModule), _dec6 = plugin(_leanesMapperAddon.default), _dec7 = plugin(_leanesConfigurableAddon.default), _dec8 = plugin(_leanesFsUtilsAddon.default), _dec9 = resolver(require, name => require(name)), initialize(_class = loadFiles(_class = (0, _leanesRestfulAddon.loadTemplates)(_class = (0, _leanesMapperAddon.loadMigrations)(_class = _dec(_class = _dec2(_class = _dec3(_class = _dec4(_class = _dec5(_class = _dec6(_class = _dec7(_class = _dec8(_class = _dec9(_class = (_class2 = (_temp = _class3 = class ServerApp extends _leanes.default {
   constructor(...args) {
     super(...args);
@@ -49,9 +47,7 @@ let ServerApp = (_dec = plugin(_leanesSwaggerAddon.default), _dec2 = plugin(_lea
     (0, _initializerDefineProperty2.default)(this, "USERS", _descriptor4, this);
     (0, _initializerDefineProperty2.default)(this, "SESSIONS_ADAPTER", _descriptor5, this);
     (0, _initializerDefineProperty2.default)(this, "SESSIONS", _descriptor6, this);
-  } // @constant SWAGGER_ROUTER = 'SwaggerRouter';
-  // @constant SWAGGER_GATEWAY = 'SwaggerGateway';
-
+  }
 
 }, _class3.object = {}, _temp), ((0, _applyDecoratedDescriptor2.default)(_class2, "object", [meta], (_init = Object.getOwnPropertyDescriptor(_class2, "object"), _init = _init ? _init.value : undefined, {
   enumerable: true,

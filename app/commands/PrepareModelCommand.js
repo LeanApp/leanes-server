@@ -73,8 +73,7 @@ var _default = Module => {
         delegate: 'SessionRecord',
         adapter: SESSIONS_ADAPTER
       });
-      this.facade.addProxy(APPLICATION_ROUTER, 'ApplicationRouter'); // this.facade.addProxy(SWAGGER_ROUTER, 'SwaggerRouter')
-      // this.facade.addProxy(SWAGGER_GATEWAY, 'SwaggerGateway')
+      this.facade.addProxy(APPLICATION_ROUTER, 'ApplicationRouter');
     }
 
   }, _class3.__filename = __filename, _class3.object = {}, _temp), ((0, _applyDecoratedDescriptor2.default)(_class2, "__filename", [nameBy], (_init = Object.getOwnPropertyDescriptor(_class2, "__filename"), _init = _init ? _init.value : undefined, {

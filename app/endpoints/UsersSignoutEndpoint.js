@@ -7,20 +7,20 @@ exports.default = void 0;
 
 var _applyDecoratedDescriptor2 = _interopRequireDefault(require("@babel/runtime/helpers/applyDecoratedDescriptor"));
 
-// This file is part of leanes-swagger-addon.
+// This file is part of leanes-server.
 //
-// leanes-swagger-addon is free software: you can redistribute it and/or modify
-// it under the terms of the GNU Lesser General Public License as published by
+// leanes-server is free software: you can redistribute it and/or modify
+// it under the terms of the GNU Affero General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
-// leanes-swagger-addon is distributed in the hope that it will be useful,
+// leanes-server is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU Lesser General Public License for more details.
+// GNU Affero General Public License for more details.
 //
-// You should have received a copy of the GNU Lesser General Public License
-// along with leanes-swagger-addon.  If not, see <https://www.gnu.org/licenses/>.
+// You should have received a copy of the GNU Affero General Public License
+// along with leanes-server.  If not, see <https://www.gnu.org/licenses/>.
 var _default = Module => {
   var _dec, _class, _class2, _init, _init2, _class3, _temp;
 

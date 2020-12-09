@@ -52,8 +52,6 @@ export default (Module) => {
         adapter: SESSIONS_ADAPTER
       });
       this.facade.addProxy(APPLICATION_ROUTER, 'ApplicationRouter');
-      // this.facade.addProxy(SWAGGER_ROUTER, 'SwaggerRouter')
-      // this.facade.addProxy(SWAGGER_GATEWAY, 'SwaggerGateway')
     }
   }
 }

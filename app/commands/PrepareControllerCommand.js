@@ -45,7 +45,7 @@ var _default = Module => {
       this.facade.addCommand(MIGRATE, 'MigrateCommand');
       this.facade.addCommand(ROLLBACK, 'RollbackCommand');
       this.facade.addCommand('ItselfResource');
-      this.facade.addCommand('UsersResource'); // this.facade.addCommand('SwaggerResource');
+      this.facade.addCommand('UsersResource');
     }
 
   }, _class3.__filename = __filename, _class3.object = {}, _temp), ((0, _applyDecoratedDescriptor2.default)(_class2, "__filename", [nameBy], (_init = Object.getOwnPropertyDescriptor(_class2, "__filename"), _init = _init ? _init.value : undefined, {

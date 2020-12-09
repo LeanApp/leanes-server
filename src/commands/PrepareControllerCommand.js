@@ -33,7 +33,6 @@ export default (Module) => {
       this.facade.addCommand(ROLLBACK, 'RollbackCommand');
       this.facade.addCommand('ItselfResource');
       this.facade.addCommand('UsersResource');
-      // this.facade.addCommand('SwaggerResource');
     }
   }
 }

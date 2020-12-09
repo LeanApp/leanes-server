@@ -25,11 +25,7 @@ import {
 } from '__RestfulAddon__';
 import SwaggerAddon from '__SwaggerAddon__';
 
-// import SwaggerResource from './resources/SwaggerResource';
-
 const { initialize, meta, nameBy, resolver, constant, plugin, loadFiles } = LeanES.NS;
-
-// @SwaggerResource
 
 @initialize
 @loadFiles
@@ -52,9 +48,6 @@ class ServerApp extends LeanES {
   @constant USERS = 'UsersCollection';
   @constant SESSIONS_ADAPTER = 'SessionsAdapter';
   @constant SESSIONS = 'SessionsCollection';
-
-  // @constant SWAGGER_ROUTER = 'SwaggerRouter';
-  // @constant SWAGGER_GATEWAY = 'SwaggerGateway';
 }
 
 export default ServerApp;
