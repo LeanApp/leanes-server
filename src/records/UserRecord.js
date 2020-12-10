@@ -16,8 +16,7 @@
 import crypto from 'crypto';
 
 const {
-  ORIGINS, HASH_DIGEST, ITERATIONS, TOKEN_ALGORITHM, KEYID, ISSUER, AUTO_LOCKING, REGISTRATION_IS_ALLOWED,
-  PUBLIC_KEY, PRIVATE_KEY, SECRET,
+  HASH_DIGEST, ITERATIONS, AUTO_LOCKING, SECRET,
 } = process.env;
 
 export default (Module) => {
@@ -25,7 +24,7 @@ export default (Module) => {
     Record,
     TimestampsRecordMixin,
     initialize, partOf, meta, nameBy, mixin, attribute, property, method, chains,
-    Utils: { uuid }
+    Utils: { uuid, makeHash }
   } = Module.NS;
 
   @initialize
@@ -64,19 +63,19 @@ export default (Module) => {
       this.nickname = this.nickname || email.split('@')[0];
       this.picture = this.picture || '';
       this.sub = this.sub || crypto.randomBytes(16).toString('hex');
-      this.salt = `${SECRET}|${uuid.v4()}`;
+      this.salt = makeHash('sha256', `${SECRET}|${uuid.v4()}`);
       this.isAdmin = this.isAdmin != null ? this.isAdmin : false;
       this.isLocked = AUTO_LOCKING == 'yes';
       return args;
     }
 
     @method hashPassword(... args) {
-      this.passwordHash = crypto.pbkdf2Sync(this.password, this.salt, ITERATIONS, 64, HASH_DIGEST).toString('hex');
+      this.passwordHash = crypto.pbkdf2Sync(this.password, this.salt, Number(ITERATIONS), 64, HASH_DIGEST).toString('hex');
       return args;
     }
 
     @method verifyPassword(password): boolean {
-      return this.passwordHash == crypto.pbkdf2Sync(password, this.salt, ITERATIONS, 64, HASH_DIGEST).toString('hex');
+      return this.passwordHash == crypto.pbkdf2Sync(password, this.salt, Number(ITERATIONS), 64, HASH_DIGEST).toString('hex');
     }
   }
 }

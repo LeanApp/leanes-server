@@ -16,18 +16,21 @@
 export default (Module) => {
   const {
     SwaggerEndpoint,
-    initialize, partOf, meta, nameBy,
+    CrudEndpointMixin,
+    initialize, partOf, meta, nameBy, mixin,
   } = Module.NS;
 
   @initialize
   @partOf(Module)
+  @mixin(CrudEndpointMixin)
   class UsersSignoutEndpoint extends SwaggerEndpoint {
     @nameBy static __filename = __filename;
     @meta static object = {};
 
     constructor() {
       super(...arguments);
-      this.response(null)
+      this.pathParam('v', this.versionSchema)
+        .response(null)
         .summary('Signout current user')
         .description('Logs the current user out.');
     }

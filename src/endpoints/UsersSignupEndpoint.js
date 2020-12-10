@@ -16,19 +16,22 @@
 export default (Module) => {
   const {
     SwaggerEndpoint,
-    initialize, partOf, meta, nameBy,
+    CrudEndpointMixin,
+    initialize, partOf, meta, nameBy, mixin,
     Utils: { joi }
   } = Module.NS;
 
   @initialize
   @partOf(Module)
+  @mixin(CrudEndpointMixin)
   class UsersSignupEndpoint extends SwaggerEndpoint {
     @nameBy static __filename = __filename;
     @meta static object = {};
 
     constructor() {
       super(...arguments);
-      this.body(joi.object({
+      this.pathParam('v', this.versionSchema)
+        .body(joi.object({
           email: joi.string().min(2).optional(),
           password: joi.string().min(4).required(),
         }).required(), 'Credentials')

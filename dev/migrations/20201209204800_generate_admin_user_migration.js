@@ -11,6 +11,8 @@ var _initializerWarningHelper2 = _interopRequireDefault(require("@babel/runtime/
 
 var _applyDecoratedDescriptor2 = _interopRequireDefault(require("@babel/runtime/helpers/applyDecoratedDescriptor"));
 
+var _ConfigurationInterface2 = require("../interfaces/ConfigurationInterface");
+
 var _CollectionInterface2 = require("../interfaces/CollectionInterface");
 
 var _RecordInterface2 = require("../interfaces/RecordInterface");
@@ -35,46 +37,54 @@ const RecordInterface = _flowRuntime.default.tdz(() => _RecordInterface2.RecordI
 
 const CollectionInterface = _flowRuntime.default.tdz(() => _CollectionInterface2.CollectionInterface);
 
+const ConfigurationInterface = _flowRuntime.default.tdz(() => _ConfigurationInterface2.ConfigurationInterface);
+
 var _default = Module => {
   let _t$TypeParametersSymb;
 
-  var _dec, _dec2, _dec3, _dec4, _dec5, _class, _class2, _init, _descriptor, _class3, _temp;
+  var _dec, _dec2, _dec3, _dec4, _dec5, _dec6, _class, _class2, _init, _descriptor, _descriptor2, _class3, _temp;
 
   const {
     USERS,
+    CONFIGURATION,
     BaseMigration,
-    ConfigurableMixin,
     initialize,
     partOf,
     nameBy,
     meta,
     method,
-    inject,
     property,
-    mixin
+    lazyInject
   } = Module.NS;
 
   const _GenerateAdminUserMigrationTypeParametersSymbol = Symbol("GenerateAdminUserMigrationTypeParameters");
 
   let GenerateAdminUserMigration = (_dec = _flowRuntime.default.annotate(_flowRuntime.default.class("GenerateAdminUserMigration", GenerateAdminUserMigration => {
     const D = GenerateAdminUserMigration.typeParameter("D", undefined, _flowRuntime.default.ref(RecordInterface));
-    return [_flowRuntime.default.extends(BaseMigration), _flowRuntime.default.staticProperty("object", _flowRuntime.default.any()), _flowRuntime.default.property("_usersFactory", _flowRuntime.default.function(_flowRuntime.default.return(_flowRuntime.default.ref(CollectionInterface, _flowRuntime.default.flowInto(D))))), _flowRuntime.default.method("constructor", _flowRuntime.default.param("args", _flowRuntime.default.any())), _flowRuntime.default.method("_users", _flowRuntime.default.return(_flowRuntime.default.ref(CollectionInterface, D))), _flowRuntime.default.staticMethod("change")];
-  })), _dec2 = partOf(Module), _dec3 = mixin(ConfigurableMixin), _dec4 = _flowRuntime.default.decorate(function () {
+    return [_flowRuntime.default.extends(BaseMigration), _flowRuntime.default.staticProperty("object", _flowRuntime.default.any()), _flowRuntime.default.property("_configurationFactory", _flowRuntime.default.function(_flowRuntime.default.return(_flowRuntime.default.ref(ConfigurationInterface)))), _flowRuntime.default.method("configs", _flowRuntime.default.return(_flowRuntime.default.ref(ConfigurationInterface))), _flowRuntime.default.property("_usersFactory", _flowRuntime.default.function(_flowRuntime.default.return(_flowRuntime.default.ref(CollectionInterface, _flowRuntime.default.flowInto(D))))), _flowRuntime.default.method("constructor", _flowRuntime.default.param("args", _flowRuntime.default.any())), _flowRuntime.default.method("_users", _flowRuntime.default.return(_flowRuntime.default.ref(CollectionInterface, D))), _flowRuntime.default.staticMethod("change")];
+  })), _dec2 = partOf(Module), _dec3 = _flowRuntime.default.decorate(_flowRuntime.default.function(_flowRuntime.default.return(_flowRuntime.default.ref(ConfigurationInterface)))), _dec4 = lazyInject(`Factory<${CONFIGURATION}>`), _dec5 = _flowRuntime.default.decorate(function () {
     return _flowRuntime.default.function(_flowRuntime.default.return(_flowRuntime.default.ref(CollectionInterface, _flowRuntime.default.flowInto(this[_GenerateAdminUserMigrationTypeParametersSymbol].D))));
-  }), _dec5 = inject(`Factory<${USERS}>`), _dec(_class = initialize(_class = _dec2(_class = _dec3(_class = (_class2 = (_temp = (_t$TypeParametersSymb = _flowRuntime.default.TypeParametersSymbol, _class3 = class GenerateAdminUserMigration extends BaseMigration {
+  }), _dec6 = lazyInject(`Factory<${USERS}>`), _dec(_class = initialize(_class = _dec2(_class = (_class2 = (_temp = (_t$TypeParametersSymb = _flowRuntime.default.TypeParametersSymbol, _class3 = class GenerateAdminUserMigration extends BaseMigration {
+    get configs() {
+      const _returnType = _flowRuntime.default.return(_flowRuntime.default.ref(ConfigurationInterface));
+
+      return _returnType.assert(this._configurationFactory());
+    }
+
     constructor(...args) {
       const _typeParameters = {
         D: _flowRuntime.default.typeParameter("D")
       };
       super(...args);
-      (0, _initializerDefineProperty2.default)(this, "_usersFactory", _descriptor, this);
+      (0, _initializerDefineProperty2.default)(this, "_configurationFactory", _descriptor, this);
+      (0, _initializerDefineProperty2.default)(this, "_usersFactory", _descriptor2, this);
       this[_GenerateAdminUserMigrationTypeParametersSymbol] = _typeParameters;
     }
 
     get _users() {
-      const _returnType = _flowRuntime.default.return(_flowRuntime.default.ref(CollectionInterface, this[_GenerateAdminUserMigrationTypeParametersSymbol].D));
+      const _returnType2 = _flowRuntime.default.return(_flowRuntime.default.ref(CollectionInterface, this[_GenerateAdminUserMigrationTypeParametersSymbol].D));
 
-      return _returnType.assert(this._usersFactory());
+      return _returnType2.assert(this._usersFactory());
     }
 
     static change() {
@@ -86,19 +96,20 @@ var _default = Module => {
         down
       }) {
         await up(async () => {
-          await this.__users.create({
+          const admin = await this._users.build({
             email: this.configs.adminEmail,
             emailVerified: true,
             name: "admin",
             nickname: "admin",
-            password: this.configs.adminPassword,
             isAdmin: true
           });
+          admin.password = this.configs.adminPassword;
+          await admin.save();
         });
         await down(async () => {
-          const admin = await this.__users.findBy({
-            "@doc.email": this.configs.adminEmail
-          });
+          const admin = await (await this._users.findBy({
+            "@doc.nickname": "admin"
+          })).first();
           await admin.destroy();
         });
       });
@@ -111,13 +122,18 @@ var _default = Module => {
     initializer: function () {
       return _init;
     }
-  }), _class2), _descriptor = (0, _applyDecoratedDescriptor2.default)(_class2.prototype, "_usersFactory", [_dec4, _dec5, property], {
+  }), _class2), _descriptor = (0, _applyDecoratedDescriptor2.default)(_class2.prototype, "_configurationFactory", [_dec3, _dec4, property], {
     configurable: true,
     enumerable: true,
     writable: true,
     initializer: null
-  }), (0, _applyDecoratedDescriptor2.default)(_class2.prototype, "_users", [property], Object.getOwnPropertyDescriptor(_class2.prototype, "_users"), _class2.prototype), (0, _applyDecoratedDescriptor2.default)(_class2, "change", [method], Object.getOwnPropertyDescriptor(_class2, "change"), _class2)), _class2)) || _class) || _class) || _class) || _class);
+  }), (0, _applyDecoratedDescriptor2.default)(_class2.prototype, "configs", [property], Object.getOwnPropertyDescriptor(_class2.prototype, "configs"), _class2.prototype), _descriptor2 = (0, _applyDecoratedDescriptor2.default)(_class2.prototype, "_usersFactory", [_dec5, _dec6, property], {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    initializer: null
+  }), (0, _applyDecoratedDescriptor2.default)(_class2.prototype, "_users", [property], Object.getOwnPropertyDescriptor(_class2.prototype, "_users"), _class2.prototype), (0, _applyDecoratedDescriptor2.default)(_class2, "change", [method], Object.getOwnPropertyDescriptor(_class2, "change"), _class2)), _class2)) || _class) || _class) || _class);
 };
 
 exports.default = _default;
-//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIm1pZ3JhdGlvbnMvMjAyMDEyMDkyMDQ4MDBfZ2VuZXJhdGVfYWRtaW5fdXNlcl9taWdyYXRpb24uanMiXSwibmFtZXMiOlsiTW9kdWxlIiwiVVNFUlMiLCJCYXNlTWlncmF0aW9uIiwiQ29uZmlndXJhYmxlTWl4aW4iLCJpbml0aWFsaXplIiwicGFydE9mIiwibmFtZUJ5IiwibWV0YSIsIm1ldGhvZCIsImluamVjdCIsInByb3BlcnR5IiwibWl4aW4iLCJOUyIsIkdlbmVyYXRlQWRtaW5Vc2VyTWlncmF0aW9uIiwiX3VzZXJzIiwiX3VzZXJzRmFjdG9yeSIsImNoYW5nZSIsInJldmVyc2libGUiLCJ1cCIsImRvd24iLCJfX3VzZXJzIiwiY3JlYXRlIiwiZW1haWwiLCJjb25maWdzIiwiYWRtaW5FbWFpbCIsImVtYWlsVmVyaWZpZWQiLCJuYW1lIiwibmlja25hbWUiLCJwYXNzd29yZCIsImFkbWluUGFzc3dvcmQiLCJpc0FkbWluIiwiYWRtaW4iLCJmaW5kQnkiLCJkZXN0cm95Iiwib2JqZWN0Il0sIm1hcHBpbmdzIjoiOzs7Ozs7Ozs7Ozs7O0FBZUE7O0FBQ0E7Ozs7QUFoQkE7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTs7Ozs7ZUFLZ0JBLE1BQUQsSUFBWTtBQUFBOztBQUFBOztBQUN6QixRQUFNO0FBQ0pDLElBQUFBLEtBREk7QUFFSkMsSUFBQUEsYUFGSTtBQUdKQyxJQUFBQSxpQkFISTtBQUlKQyxJQUFBQSxVQUpJO0FBSVFDLElBQUFBLE1BSlI7QUFJZ0JDLElBQUFBLE1BSmhCO0FBSXdCQyxJQUFBQSxJQUp4QjtBQUk4QkMsSUFBQUEsTUFKOUI7QUFJc0NDLElBQUFBLE1BSnRDO0FBSThDQyxJQUFBQSxRQUo5QztBQUl3REMsSUFBQUE7QUFKeEQsTUFLRlgsTUFBTSxDQUFDWSxFQUxYOztBQUR5Qjs7QUFBQSxNQVduQkMsMEJBWG1CLHlDQVF6QjtBQUFBLHVFQUdzQyx5Q0FIdEM7QUFBQSx5Q0FHZ0VYLGFBSGhFLEdBSUUseUVBSkYsRUFNRSwrQ0FDdUIsMERBQVEsOENBQW9CLGdDQUFwQixDQUFSLEVBRHZCLENBTkYsOEdBUUUsa0VBQXNCLDhDQUFzQixDQUF0QixDQUF0QixFQVJGLEVBV0UsMkNBWEY7QUFBQSxJQVJ5QixXQVN4QkcsTUFBTSxDQUFDTCxNQUFELENBVGtCLFVBVXhCVyxLQUFLLENBQUNSLGlCQUFELENBVm1CO0FBQUEsV0FlQSwwREFBUSw4Q0FBb0Isc0ZBQXBCLENBQVIsRUFmQTtBQUFBLGNBY3RCTSxNQUFNLENBQUUsV0FBVVIsS0FBTSxHQUFsQixDQWRnQixnQkFReEJHLFVBUndCLDBJQVF6QixNQUdNUywwQkFITixTQUdnRVgsYUFIaEUsQ0FHOEU7QUFBQTtBQUFBO0FBQUEsV0FBNUM7QUFBNEM7QUFBQTtBQUFBO0FBQUE7QUFBQTs7QUFLNUUsUUFBY1ksTUFBZCxHQUErQztBQUFBLHNEQUF2Qiw4Q0FBb0IsdURBQXBCLENBQXVCOztBQUM3QyxnQ0FBTyxLQUFLQyxhQUFMLEVBQVA7QUFDRDs7QUFDRCxXQUFlQyxNQUFmLEdBQXdCO0FBQUE7QUFBQSxXQVJRO0FBUVI7QUFDdEIsV0FBS0MsVUFBTCxDQUFnQixnQkFBZ0I7QUFBRUMsUUFBQUEsRUFBRjtBQUFNQyxRQUFBQTtBQUFOLE9BQWhCLEVBQThCO0FBQzVDLGNBQU1ELEVBQUUsQ0FBQyxZQUFZO0FBQ25CLGdCQUFNLEtBQUtFLE9BQUwsQ0FBYUMsTUFBYixDQUFvQjtBQUN4QkMsWUFBQUEsS0FBSyxFQUFFLEtBQUtDLE9BQUwsQ0FBYUMsVUFESTtBQUV4QkMsWUFBQUEsYUFBYSxFQUFFLElBRlM7QUFHeEJDLFlBQUFBLElBQUksRUFBRSxPQUhrQjtBQUl4QkMsWUFBQUEsUUFBUSxFQUFFLE9BSmM7QUFLeEJDLFlBQUFBLFFBQVEsRUFBRSxLQUFLTCxPQUFMLENBQWFNLGFBTEM7QUFNeEJDLFlBQUFBLE9BQU8sRUFBRTtBQU5lLFdBQXBCLENBQU47QUFRRCxTQVRPLENBQVI7QUFVQSxjQUFNWCxJQUFJLENBQUMsWUFBWTtBQUNyQixnQkFBTVksS0FBSyxHQUFHLE1BQU0sS0FBS1gsT0FBTCxDQUFhWSxNQUFiLENBQW9CO0FBQUMsMEJBQWMsS0FBS1QsT0FBTCxDQUFhQztBQUE1QixXQUFwQixDQUFwQjtBQUNBLGdCQUFNTyxLQUFLLENBQUNFLE9BQU4sRUFBTjtBQUNELFNBSFMsQ0FBVjtBQUlELE9BZkQ7QUFnQkQ7O0FBekIyRSxHQVhyRCw2RkFZVkMsTUFaVSxHQVlELEVBWkMsdUVBWXRCM0IsSUFac0I7QUFBQTtBQUFBO0FBQUE7QUFBQTtBQUFBO0FBQUE7QUFBQSx5SEFldEJHLFFBZnNCO0FBQUE7QUFBQTtBQUFBO0FBQUE7QUFBQSw0RUFnQnRCQSxRQWhCc0IsaUpBbUJ0QkYsTUFuQnNCO0FBc0MxQixDIiwic291cmNlc0NvbnRlbnQiOlsiLy8gVGhpcyBmaWxlIGlzIHBhcnQgb2YgbGVhbmVzLXNlcnZlci5cbi8vXG4vLyBsZWFuZXMtc2VydmVyIGlzIGZyZWUgc29mdHdhcmU6IHlvdSBjYW4gcmVkaXN0cmlidXRlIGl0IGFuZC9vciBtb2RpZnlcbi8vIGl0IHVuZGVyIHRoZSB0ZXJtcyBvZiB0aGUgR05VIEFmZmVybyBHZW5lcmFsIFB1YmxpYyBMaWNlbnNlIGFzIHB1Ymxpc2hlZCBieVxuLy8gdGhlIEZyZWUgU29mdHdhcmUgRm91bmRhdGlvbiwgZWl0aGVyIHZlcnNpb24gMyBvZiB0aGUgTGljZW5zZSwgb3Jcbi8vIChhdCB5b3VyIG9wdGlvbikgYW55IGxhdGVyIHZlcnNpb24uXG4vL1xuLy8gbGVhbmVzLXNlcnZlciBpcyBkaXN0cmlidXRlZCBpbiB0aGUgaG9wZSB0aGF0IGl0IHdpbGwgYmUgdXNlZnVsLFxuLy8gYnV0IFdJVEhPVVQgQU5ZIFdBUlJBTlRZOyB3aXRob3V0IGV2ZW4gdGhlIGltcGxpZWQgd2FycmFudHkgb2Zcbi8vIE1FUkNIQU5UQUJJTElUWSBvciBGSVRORVNTIEZPUiBBIFBBUlRJQ1VMQVIgUFVSUE9TRS4gIFNlZSB0aGVcbi8vIEdOVSBBZmZlcm8gR2VuZXJhbCBQdWJsaWMgTGljZW5zZSBmb3IgbW9yZSBkZXRhaWxzLlxuLy9cbi8vIFlvdSBzaG91bGQgaGF2ZSByZWNlaXZlZCBhIGNvcHkgb2YgdGhlIEdOVSBBZmZlcm8gR2VuZXJhbCBQdWJsaWMgTGljZW5zZVxuLy8gYWxvbmcgd2l0aCBsZWFuZXMtc2VydmVyLiAgSWYgbm90LCBzZWUgPGh0dHBzOi8vd3d3LmdudS5vcmcvbGljZW5zZXMvPi5cblxuaW1wb3J0IHR5cGUgeyBDb2xsZWN0aW9uSW50ZXJmYWNlIH0gZnJvbSAnLi4vaW50ZXJmYWNlcy9Db2xsZWN0aW9uSW50ZXJmYWNlJztcbmltcG9ydCB0eXBlIHsgUmVjb3JkSW50ZXJmYWNlIH0gZnJvbSAnLi4vaW50ZXJmYWNlcy9SZWNvcmRJbnRlcmZhY2UnO1xuXG5leHBvcnQgZGVmYXVsdCAoTW9kdWxlKSA9PiB7XG4gIGNvbnN0IHtcbiAgICBVU0VSUyxcbiAgICBCYXNlTWlncmF0aW9uLFxuICAgIENvbmZpZ3VyYWJsZU1peGluLFxuICAgIGluaXRpYWxpemUsIHBhcnRPZiwgbmFtZUJ5LCBtZXRhLCBtZXRob2QsIGluamVjdCwgcHJvcGVydHksIG1peGluLFxuICB9ID0gTW9kdWxlLk5TO1xuXG4gIEBpbml0aWFsaXplXG4gIEBwYXJ0T2YoTW9kdWxlKVxuICBAbWl4aW4oQ29uZmlndXJhYmxlTWl4aW4pXG4gIGNsYXNzIEdlbmVyYXRlQWRtaW5Vc2VyTWlncmF0aW9uPCBEID0gUmVjb3JkSW50ZXJmYWNlID4gZXh0ZW5kcyBCYXNlTWlncmF0aW9uIHtcbiAgICBAbWV0YSBzdGF0aWMgb2JqZWN0ID0ge307XG5cbiAgICBAaW5qZWN0KGBGYWN0b3J5PCR7VVNFUlN9PmApXG4gICAgQHByb3BlcnR5IF91c2Vyc0ZhY3Rvcnk6ICgpID0+IENvbGxlY3Rpb25JbnRlcmZhY2U8RD47XG4gICAgQHByb3BlcnR5IGdldCBfdXNlcnMoKTogQ29sbGVjdGlvbkludGVyZmFjZTxEPiB7XG4gICAgICByZXR1cm4gdGhpcy5fdXNlcnNGYWN0b3J5KClcbiAgICB9XG4gICAgQG1ldGhvZCBzdGF0aWMgY2hhbmdlKCkge1xuICAgICAgdGhpcy5yZXZlcnNpYmxlKGFzeW5jIGZ1bmN0aW9uICh7IHVwLCBkb3duIH0pIHtcbiAgICAgICAgYXdhaXQgdXAoYXN5bmMgKCkgPT4ge1xuICAgICAgICAgIGF3YWl0IHRoaXMuX191c2Vycy5jcmVhdGUoe1xuICAgICAgICAgICAgZW1haWw6IHRoaXMuY29uZmlncy5hZG1pbkVtYWlsLFxuICAgICAgICAgICAgZW1haWxWZXJpZmllZDogdHJ1ZSxcbiAgICAgICAgICAgIG5hbWU6IFwiYWRtaW5cIixcbiAgICAgICAgICAgIG5pY2tuYW1lOiBcImFkbWluXCIsXG4gICAgICAgICAgICBwYXNzd29yZDogdGhpcy5jb25maWdzLmFkbWluUGFzc3dvcmQsXG4gICAgICAgICAgICBpc0FkbWluOiB0cnVlLFxuICAgICAgICAgIH0pXG4gICAgICAgIH0pO1xuICAgICAgICBhd2FpdCBkb3duKGFzeW5jICgpID0+IHtcbiAgICAgICAgICBjb25zdCBhZG1pbiA9IGF3YWl0IHRoaXMuX191c2Vycy5maW5kQnkoe1wiQGRvYy5lbWFpbFwiOiB0aGlzLmNvbmZpZ3MuYWRtaW5FbWFpbH0pXG4gICAgICAgICAgYXdhaXQgYWRtaW4uZGVzdHJveSgpXG4gICAgICAgIH0pO1xuICAgICAgfSk7XG4gICAgfVxuICB9XG59XG4iXX0=
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIm1pZ3JhdGlvbnMvMjAyMDEyMDkyMDQ4MDBfZ2VuZXJhdGVfYWRtaW5fdXNlcl9taWdyYXRpb24uanMiXSwibmFtZXMiOlsiTW9kdWxlIiwiVVNFUlMiLCJDT05GSUdVUkFUSU9OIiwiQmFzZU1pZ3JhdGlvbiIsImluaXRpYWxpemUiLCJwYXJ0T2YiLCJuYW1lQnkiLCJtZXRhIiwibWV0aG9kIiwicHJvcGVydHkiLCJsYXp5SW5qZWN0IiwiTlMiLCJHZW5lcmF0ZUFkbWluVXNlck1pZ3JhdGlvbiIsImNvbmZpZ3MiLCJfY29uZmlndXJhdGlvbkZhY3RvcnkiLCJfdXNlcnMiLCJfdXNlcnNGYWN0b3J5IiwiY2hhbmdlIiwicmV2ZXJzaWJsZSIsInVwIiwiZG93biIsImFkbWluIiwiYnVpbGQiLCJlbWFpbCIsImFkbWluRW1haWwiLCJlbWFpbFZlcmlmaWVkIiwibmFtZSIsIm5pY2tuYW1lIiwiaXNBZG1pbiIsInBhc3N3b3JkIiwiYWRtaW5QYXNzd29yZCIsInNhdmUiLCJmaW5kQnkiLCJmaXJzdCIsImRlc3Ryb3kiLCJvYmplY3QiXSwibWFwcGluZ3MiOiI7Ozs7Ozs7Ozs7Ozs7QUFlQTs7QUFDQTs7QUFDQTs7OztBQWpCQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBOzs7Ozs7O2VBTWdCQSxNQUFELElBQVk7QUFBQTs7QUFBQTs7QUFDekIsUUFBTTtBQUNKQyxJQUFBQSxLQURJO0FBQ0dDLElBQUFBLGFBREg7QUFFSkMsSUFBQUEsYUFGSTtBQUdKQyxJQUFBQSxVQUhJO0FBR1FDLElBQUFBLE1BSFI7QUFHZ0JDLElBQUFBLE1BSGhCO0FBR3dCQyxJQUFBQSxJQUh4QjtBQUc4QkMsSUFBQUEsTUFIOUI7QUFHc0NDLElBQUFBLFFBSHRDO0FBR2dEQyxJQUFBQTtBQUhoRCxNQUlGVixNQUFNLENBQUNXLEVBSlg7O0FBRHlCOztBQUFBLE1BU25CQywwQkFUbUIseUNBT3pCO0FBQUEsdUVBRXNDLHlDQUZ0QztBQUFBLHlDQUVnRVQsYUFGaEUsR0FHRSx5RUFIRixFQUtFLHVEQUMrQiwwREFBUSxnREFBUixFQUQvQixDQUxGLEVBUUUsbUVBQXVCLGdEQUF2QixFQVJGLEVBWUUsK0NBQ3VCLDBEQUFRLDhDQUFvQixnQ0FBcEIsQ0FBUixFQUR2QixDQVpGLDhHQWNFLGtFQUFzQiw4Q0FBc0IsQ0FBdEIsQ0FBdEIsRUFkRixFQWtCRSwyQ0FsQkY7QUFBQSxJQVB5QixXQVF4QkUsTUFBTSxDQUFDTCxNQUFELENBUmtCLHdDQWFRLDBEQUFRLGdEQUFSLEVBYlIsV0FZdEJVLFVBQVUsQ0FBRSxXQUFVUixhQUFjLEdBQTFCLENBWlk7QUFBQSxXQW9CQSwwREFBUSw4Q0FBb0Isc0ZBQXBCLENBQVIsRUFwQkE7QUFBQSxjQW1CdEJRLFVBQVUsQ0FBRSxXQUFVVCxLQUFNLEdBQWxCLENBbkJZLGdCQU94QkcsVUFQd0IsMkhBT3pCLE1BRU1RLDBCQUZOLFNBRWdFVCxhQUZoRSxDQUU4RTtBQU01RSxRQUFjVSxPQUFkLEdBQWdEO0FBQUEsc0RBQXZCLGdEQUF1Qjs7QUFDOUMsZ0NBQU8sS0FBS0MscUJBQUwsRUFBUDtBQUNEOztBQVIyRTtBQUFBO0FBQUEsV0FBNUM7QUFBNEM7QUFBQTtBQUFBO0FBQUE7QUFBQTtBQUFBOztBQVk1RSxRQUFjQyxNQUFkLEdBQStDO0FBQUEsdURBQXZCLDhDQUFvQix1REFBcEIsQ0FBdUI7O0FBQzdDLGlDQUFPLEtBQUtDLGFBQUwsRUFBUDtBQUNEOztBQUVELFdBQWVDLE1BQWYsR0FBd0I7QUFBQTtBQUFBLFdBaEJRO0FBZ0JSO0FBQ3RCLFdBQUtDLFVBQUwsQ0FBZ0IsZ0JBQWdCO0FBQUVDLFFBQUFBLEVBQUY7QUFBTUMsUUFBQUE7QUFBTixPQUFoQixFQUE4QjtBQUM1QyxjQUFNRCxFQUFFLENBQUMsWUFBWTtBQUNuQixnQkFBTUUsS0FBSyxHQUFHLE1BQU0sS0FBS04sTUFBTCxDQUFZTyxLQUFaLENBQWtCO0FBQ3BDQyxZQUFBQSxLQUFLLEVBQUUsS0FBS1YsT0FBTCxDQUFhVyxVQURnQjtBQUVwQ0MsWUFBQUEsYUFBYSxFQUFFLElBRnFCO0FBR3BDQyxZQUFBQSxJQUFJLEVBQUUsT0FIOEI7QUFJcENDLFlBQUFBLFFBQVEsRUFBRSxPQUowQjtBQUtwQ0MsWUFBQUEsT0FBTyxFQUFFO0FBTDJCLFdBQWxCLENBQXBCO0FBT0FQLFVBQUFBLEtBQUssQ0FBQ1EsUUFBTixHQUFpQixLQUFLaEIsT0FBTCxDQUFhaUIsYUFBOUI7QUFDQSxnQkFBTVQsS0FBSyxDQUFDVSxJQUFOLEVBQU47QUFDRCxTQVZPLENBQVI7QUFXQSxjQUFNWCxJQUFJLENBQUMsWUFBWTtBQUNyQixnQkFBTUMsS0FBSyxHQUFHLE1BQU0sQ0FBQyxNQUFNLEtBQUtOLE1BQUwsQ0FBWWlCLE1BQVosQ0FBbUI7QUFBQyw2QkFBaUI7QUFBbEIsV0FBbkIsQ0FBUCxFQUF1REMsS0FBdkQsRUFBcEI7QUFDQSxnQkFBTVosS0FBSyxDQUFDYSxPQUFOLEVBQU47QUFDRCxTQUhTLENBQVY7QUFJRCxPQWhCRDtBQWlCRDs7QUFsQzJFLEdBVHJELDZGQVVWQyxNQVZVLEdBVUQsRUFWQyx1RUFVdEI1QixJQVZzQjtBQUFBO0FBQUE7QUFBQTtBQUFBO0FBQUE7QUFBQTtBQUFBLGlJQWF0QkUsUUFic0I7QUFBQTtBQUFBO0FBQUE7QUFBQTtBQUFBLDZFQWV0QkEsUUFmc0IsZ01Bb0J0QkEsUUFwQnNCO0FBQUE7QUFBQTtBQUFBO0FBQUE7QUFBQSw0RUFxQnRCQSxRQXJCc0IsaUpBeUJ0QkQsTUF6QnNCO0FBNkMxQixDIiwic291cmNlc0NvbnRlbnQiOlsiLy8gVGhpcyBmaWxlIGlzIHBhcnQgb2YgbGVhbmVzLXNlcnZlci5cbi8vXG4vLyBsZWFuZXMtc2VydmVyIGlzIGZyZWUgc29mdHdhcmU6IHlvdSBjYW4gcmVkaXN0cmlidXRlIGl0IGFuZC9vciBtb2RpZnlcbi8vIGl0IHVuZGVyIHRoZSB0ZXJtcyBvZiB0aGUgR05VIEFmZmVybyBHZW5lcmFsIFB1YmxpYyBMaWNlbnNlIGFzIHB1Ymxpc2hlZCBieVxuLy8gdGhlIEZyZWUgU29mdHdhcmUgRm91bmRhdGlvbiwgZWl0aGVyIHZlcnNpb24gMyBvZiB0aGUgTGljZW5zZSwgb3Jcbi8vIChhdCB5b3VyIG9wdGlvbikgYW55IGxhdGVyIHZlcnNpb24uXG4vL1xuLy8gbGVhbmVzLXNlcnZlciBpcyBkaXN0cmlidXRlZCBpbiB0aGUgaG9wZSB0aGF0IGl0IHdpbGwgYmUgdXNlZnVsLFxuLy8gYnV0IFdJVEhPVVQgQU5ZIFdBUlJBTlRZOyB3aXRob3V0IGV2ZW4gdGhlIGltcGxpZWQgd2FycmFudHkgb2Zcbi8vIE1FUkNIQU5UQUJJTElUWSBvciBGSVRORVNTIEZPUiBBIFBBUlRJQ1VMQVIgUFVSUE9TRS4gIFNlZSB0aGVcbi8vIEdOVSBBZmZlcm8gR2VuZXJhbCBQdWJsaWMgTGljZW5zZSBmb3IgbW9yZSBkZXRhaWxzLlxuLy9cbi8vIFlvdSBzaG91bGQgaGF2ZSByZWNlaXZlZCBhIGNvcHkgb2YgdGhlIEdOVSBBZmZlcm8gR2VuZXJhbCBQdWJsaWMgTGljZW5zZVxuLy8gYWxvbmcgd2l0aCBsZWFuZXMtc2VydmVyLiAgSWYgbm90LCBzZWUgPGh0dHBzOi8vd3d3LmdudS5vcmcvbGljZW5zZXMvPi5cblxuaW1wb3J0IHR5cGUgeyBDb25maWd1cmF0aW9uSW50ZXJmYWNlIH0gZnJvbSAnLi4vaW50ZXJmYWNlcy9Db25maWd1cmF0aW9uSW50ZXJmYWNlJztcbmltcG9ydCB0eXBlIHsgQ29sbGVjdGlvbkludGVyZmFjZSB9IGZyb20gJy4uL2ludGVyZmFjZXMvQ29sbGVjdGlvbkludGVyZmFjZSc7XG5pbXBvcnQgdHlwZSB7IFJlY29yZEludGVyZmFjZSB9IGZyb20gJy4uL2ludGVyZmFjZXMvUmVjb3JkSW50ZXJmYWNlJztcblxuZXhwb3J0IGRlZmF1bHQgKE1vZHVsZSkgPT4ge1xuICBjb25zdCB7XG4gICAgVVNFUlMsIENPTkZJR1VSQVRJT04sXG4gICAgQmFzZU1pZ3JhdGlvbixcbiAgICBpbml0aWFsaXplLCBwYXJ0T2YsIG5hbWVCeSwgbWV0YSwgbWV0aG9kLCBwcm9wZXJ0eSwgbGF6eUluamVjdCxcbiAgfSA9IE1vZHVsZS5OUztcblxuICBAaW5pdGlhbGl6ZVxuICBAcGFydE9mKE1vZHVsZSlcbiAgY2xhc3MgR2VuZXJhdGVBZG1pblVzZXJNaWdyYXRpb248IEQgPSBSZWNvcmRJbnRlcmZhY2UgPiBleHRlbmRzIEJhc2VNaWdyYXRpb24ge1xuICAgIEBtZXRhIHN0YXRpYyBvYmplY3QgPSB7fTtcblxuICAgIEBsYXp5SW5qZWN0KGBGYWN0b3J5PCR7Q09ORklHVVJBVElPTn0+YClcbiAgICBAcHJvcGVydHkgX2NvbmZpZ3VyYXRpb25GYWN0b3J5OiAoKSA9PiBDb25maWd1cmF0aW9uSW50ZXJmYWNlO1xuXG4gICAgQHByb3BlcnR5IGdldCBjb25maWdzKCk6IENvbmZpZ3VyYXRpb25JbnRlcmZhY2Uge1xuICAgICAgcmV0dXJuIHRoaXMuX2NvbmZpZ3VyYXRpb25GYWN0b3J5KCk7XG4gICAgfVxuXG4gICAgQGxhenlJbmplY3QoYEZhY3Rvcnk8JHtVU0VSU30+YClcbiAgICBAcHJvcGVydHkgX3VzZXJzRmFjdG9yeTogKCkgPT4gQ29sbGVjdGlvbkludGVyZmFjZTxEPjtcbiAgICBAcHJvcGVydHkgZ2V0IF91c2VycygpOiBDb2xsZWN0aW9uSW50ZXJmYWNlPEQ+IHtcbiAgICAgIHJldHVybiB0aGlzLl91c2Vyc0ZhY3RvcnkoKVxuICAgIH1cblxuICAgIEBtZXRob2Qgc3RhdGljIGNoYW5nZSgpIHtcbiAgICAgIHRoaXMucmV2ZXJzaWJsZShhc3luYyBmdW5jdGlvbiAoeyB1cCwgZG93biB9KSB7XG4gICAgICAgIGF3YWl0IHVwKGFzeW5jICgpID0+IHtcbiAgICAgICAgICBjb25zdCBhZG1pbiA9IGF3YWl0IHRoaXMuX3VzZXJzLmJ1aWxkKHtcbiAgICAgICAgICAgIGVtYWlsOiB0aGlzLmNvbmZpZ3MuYWRtaW5FbWFpbCxcbiAgICAgICAgICAgIGVtYWlsVmVyaWZpZWQ6IHRydWUsXG4gICAgICAgICAgICBuYW1lOiBcImFkbWluXCIsXG4gICAgICAgICAgICBuaWNrbmFtZTogXCJhZG1pblwiLFxuICAgICAgICAgICAgaXNBZG1pbjogdHJ1ZSxcbiAgICAgICAgICB9KVxuICAgICAgICAgIGFkbWluLnBhc3N3b3JkID0gdGhpcy5jb25maWdzLmFkbWluUGFzc3dvcmRcbiAgICAgICAgICBhd2FpdCBhZG1pbi5zYXZlKClcbiAgICAgICAgfSk7XG4gICAgICAgIGF3YWl0IGRvd24oYXN5bmMgKCkgPT4ge1xuICAgICAgICAgIGNvbnN0IGFkbWluID0gYXdhaXQgKGF3YWl0IHRoaXMuX3VzZXJzLmZpbmRCeSh7XCJAZG9jLm5pY2tuYW1lXCI6IFwiYWRtaW5cIn0pKS5maXJzdCgpXG4gICAgICAgICAgYXdhaXQgYWRtaW4uZGVzdHJveSgpXG4gICAgICAgIH0pO1xuICAgICAgfSk7XG4gICAgfVxuICB9XG59XG4iXX0=

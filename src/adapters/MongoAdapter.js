@@ -10,40 +10,48 @@
 
 import type { DriverInterface } from '../interfaces/DriverInterface';
 
+const {
+  DB_PROTO, DB_HOST, DB_PORT, DB_NAME, DB_USER, DB_PASS,
+} = process.env;
+
 export default (Module) => {
   const {
     Adapter,
-    ConfigurableMixin,
     MongoAdapterMixin,
+    QueryableMongoAdapterMixin,
     initialize, partOf, meta, property, nameBy, mixin,
   } = Module.NS;
 
   @initialize
   @partOf(Module)
+  @mixin(QueryableMongoAdapterMixin)
   @mixin(MongoAdapterMixin)
-  @mixin(ConfigurableMixin)
   class MongoAdapter extends Adapter implements DriverInterface {
     @nameBy static  __filename = __filename;
     @meta static object = {};
 
+    @property get dbProto(): string {
+      return DB_PROTO;
+    };
+
     @property get host(): string {
-      return this.configs['mongodb'].host;
+      return DB_HOST;
     };
 
     @property get port(): string {
-      return this.configs['mongodb'].port;
+      return DB_PORT;
     };
 
     @property get dbName(): string {
-      return this.configs['mongodb'].dbName;
+      return DB_NAME;
     };
 
     @property get username(): ?string {
-      return this.configs['mongodb'].username;
+      return DB_USER;
     };
 
     @property get password(): ?string {
-      return this.configs['mongodb'].password;
+      return DB_PASS;
     };
   }
 }

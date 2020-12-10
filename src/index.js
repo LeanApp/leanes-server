@@ -23,6 +23,7 @@ import MongoAddon from '__MongoAddon__';
 import {
   default as RestfulAddon, TemplatableModule, loadTemplates
 } from '__RestfulAddon__';
+import QueryableAddon from '__QueryableAddon__';
 import SwaggerAddon from '__SwaggerAddon__';
 
 const { initialize, meta, nameBy, resolver, constant, plugin, loadFiles } = LeanES.NS;
@@ -32,6 +33,7 @@ const { initialize, meta, nameBy, resolver, constant, plugin, loadFiles } = Lean
 @loadTemplates
 @loadMigrations
 @plugin(SwaggerAddon)
+@plugin(QueryableAddon)
 @plugin(TemplatableModule)
 @plugin(RestfulAddon)
 @plugin(MongoAddon)

@@ -28,6 +28,9 @@ const devJS = replacer(new WatchedDir(appRoot), {
     match: '__RestfulAddon__',
     replacement: '@leansdk/leanes-restful-addon/lib/index.dev',
   }, {
+    match: '__QueryableAddon__',
+    replacement: '@leansdk/leanes-queryable-addon/lib/index.dev',
+  }, {
     match: '__SwaggerAddon__',
     replacement: '@leansdk/leanes-swagger-addon/dev',
   },]
@@ -74,6 +77,9 @@ const prodJS = replacer(appRoot, {
   }, {
     match: '__RestfulAddon__',
     replacement: '@leansdk/leanes-restful-addon',
+  }, {
+    match: '__QueryableAddon__',
+    replacement: '@leansdk/leanes-queryable-addon',
   }, {
     match: '__SwaggerAddon__',
     replacement: '@leansdk/leanes-swagger-addon',

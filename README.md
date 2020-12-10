@@ -53,6 +53,13 @@ or
 ./npm run dev_migrate
 ```
 
+## Generate private and public keys
+
+`openssl genrsa -out private.pem 1024`
+`openssl rsa -in private.pem -pubout -out public.pem`
+`cat private.pem`
+`cat public.pem`
+
 ## Swagger UI
 [link](http://192.168.2.3:3001/swagger/index.html)
 

@@ -5,7 +5,7 @@ const Module = require(path).default
 
 async function startup(Module, app) {
   const migrationsCollection = app.facade.getProxy(Module.NS.MIGRATIONS)
-  const voDB = await migrationsCollection.adapter.connection
+  const voDB = await migrationsCollection.adapter.db
   const qualifiedName = migrationsCollection.collectionFullName()
   if ((await voDB.listCollections({name: qualifiedName}).toArray()).length === 0) {
     const collection = await voDB.createCollection(qualifiedName)

@@ -18,9 +18,11 @@ import type { RecordInterface } from '../interfaces/RecordInterface';
 
 import jwt from 'jsonwebtoken';
 
+import parse from 'co-body';
+
 const {
-  ORIGINS, HASH_DIGEST, ITERATIONS, TOKEN_ALGORITHM, KEYID, ISSUER, AUTO_LOCKING, REGISTRATION_IS_ALLOWED,
-  PUBLIC_KEY, PRIVATE_KEY, SECRET, DEFAULT_USERS
+  TOKEN_ALGORITHM, KEYID, ISSUER, REGISTRATION_IS_ALLOWED,
+  PUBLIC_KEY, PRIVATE_KEY,
 } = process.env;
 
 export default (Module) => {
@@ -31,7 +33,8 @@ export default (Module) => {
     CheckSchemaVersionResourceMixin,
     CheckApiVersionResourceMixin,
     CheckSessionsMixin,
-    initialize, partOf, meta, property, nameBy, mixin, inject, chains, action,
+    QueryableResourceMixin,
+    initialize, partOf, meta, property, nameBy, mixin, inject, chains, action, method,
     Utils: { _, statuses }
   } = Module.NS;
 
@@ -55,6 +58,7 @@ export default (Module) => {
     });
   })
   @partOf(Module)
+  @mixin(QueryableResourceMixin)
   @mixin(CheckSessionsMixin)
   @mixin(CheckSchemaVersionResourceMixin)
   @mixin(CheckApiVersionResourceMixin)
@@ -126,8 +130,16 @@ export default (Module) => {
       this.context.status = NO_CONTENT;
     }
 
+    @method async parseBody(...args) {
+      const { parsed, raw } = await parse(this.context._req, {returnRawBody: this.withRawBody});
+      console.log('??????????/parseBody', parsed);
+      this.context.request.body = parsed;
+      this.context.request.raw = raw;
+      return args;
+    }
+
     @action async authorize() {
-      console.log('authorize');
+      console.log('authorize', this.context.request.body);
       const {
         username, password,
       } = this.context.request.body;

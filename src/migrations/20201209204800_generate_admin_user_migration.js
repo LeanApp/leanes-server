@@ -13,42 +13,50 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with leanes-server.  If not, see <https://www.gnu.org/licenses/>.
 
+import type { ConfigurationInterface } from '../interfaces/ConfigurationInterface';
 import type { CollectionInterface } from '../interfaces/CollectionInterface';
 import type { RecordInterface } from '../interfaces/RecordInterface';
 
 export default (Module) => {
   const {
-    USERS,
+    USERS, CONFIGURATION,
     BaseMigration,
-    ConfigurableMixin,
-    initialize, partOf, nameBy, meta, method, inject, property, mixin,
+    initialize, partOf, nameBy, meta, method, property, lazyInject,
   } = Module.NS;
 
   @initialize
   @partOf(Module)
-  @mixin(ConfigurableMixin)
   class GenerateAdminUserMigration< D = RecordInterface > extends BaseMigration {
     @meta static object = {};
 
-    @inject(`Factory<${USERS}>`)
+    @lazyInject(`Factory<${CONFIGURATION}>`)
+    @property _configurationFactory: () => ConfigurationInterface;
+
+    @property get configs(): ConfigurationInterface {
+      return this._configurationFactory();
+    }
+
+    @lazyInject(`Factory<${USERS}>`)
     @property _usersFactory: () => CollectionInterface<D>;
     @property get _users(): CollectionInterface<D> {
       return this._usersFactory()
     }
+
     @method static change() {
       this.reversible(async function ({ up, down }) {
         await up(async () => {
-          await this.__users.create({
+          const admin = await this._users.build({
             email: this.configs.adminEmail,
             emailVerified: true,
             name: "admin",
             nickname: "admin",
-            password: this.configs.adminPassword,
             isAdmin: true,
           })
+          admin.password = this.configs.adminPassword
+          await admin.save()
         });
         await down(async () => {
-          const admin = await this.__users.findBy({"@doc.email": this.configs.adminEmail})
+          const admin = await (await this._users.findBy({"@doc.nickname": "admin"})).first()
           await admin.destroy()
         });
       });

@@ -5,7 +5,7 @@ const Module = require(path).default
 
 async function startup(Module, app) {
   const migrationsCollection = app.facade.getProxy(Module.NS.MIGRATIONS)
-  const voDB = await migrationsCollection.adapter.connection
+  const voDB = await migrationsCollection.adapter.db
   const qualifiedName = migrationsCollection.collectionFullName()
   if ((await voDB.listCollections({name: qualifiedName}).toArray()).length === 0) {
     const collection = await voDB.createCollection(qualifiedName)
@@ -18,7 +18,7 @@ async function rollback({until, steps}) {
   app = Module.NS.MainApplication.new(Module.NS.LIGHTWEIGHT)
   app.start()
   await startup(Module, app)
-  await app.rollback({until, steps})
+  await app.rollback({until, steps: Number(steps)})
   await app.finish()
 }
 console.log('?>?>?? rollback', process.argv);

@@ -15,6 +15,10 @@
 
 import cors from '@koa/cors';
 
+const {
+  ORIGINS,
+} = process.env;
+
 export default (Module) => {
   const {
     initializeMixin, meta, property, method,
@@ -35,10 +39,9 @@ export default (Module) => {
             const allowMethods = 'GET, HEAD, PUT, POST, DELETE, OPTIONS, PATCH, COPY';
             const exposeHeaders = 'content-length, server';
             const maxAge = 1800;
-            let origins = this.configs.corsOrigins;
-            if (origins !== '*' && (origins != null ? origins.split : void 0)) {
-              origins = origins.split(', ');
-            }
+            const origins = ORIGINS !== '*' && (ORIGINS != null ? ORIGINS.split : void 0)
+              ? ORIGINS.split(', ')
+              : ORIGINS;
             const origin = (origins == null) || origins === '*' ? void 0 : (ctx) => {
               return origins.find((_origin) => {
                 return _origin === ctx.get('Origin');

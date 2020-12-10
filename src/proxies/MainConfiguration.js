@@ -8,6 +8,10 @@
 // WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
 // the specific language governing rights and limitations under the License.
 
+const {
+  COOKIE_KEY,
+} = process.env;
+
 export default (Module) => {
   const {
     Configuration,
@@ -19,6 +23,10 @@ export default (Module) => {
   class MainConfiguration extends Configuration {
     @nameBy static  __filename = __filename;
     @meta static object = {};
+
+    @property get cookieKey(): string {
+      return COOKIE_KEY;
+    }
 
     @property get manifestPath(): string {
       return '../package.json';
