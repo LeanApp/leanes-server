@@ -53,19 +53,19 @@ var _default = Module => {
     var _dec, _dec2, _class, _class2, _init, _descriptor, _descriptor2, _descriptor3, _class3, _temp;
 
     return _dec = inject(`Factory<${SESSIONS}>`), _dec2 = inject(`Factory<${USERS}>`), initializeMixin(_class = (_class2 = (_temp = _class3 = class Mixin extends BaseClass {
-      constructor(...args) {
-        super(...args);
-        (0, _initializerDefineProperty2.default)(this, "__sessionsFactory", _descriptor, this);
-        (0, _initializerDefineProperty2.default)(this, "__usersFactory", _descriptor2, this);
-        (0, _initializerDefineProperty2.default)(this, "session", _descriptor3, this);
-      }
-
       get __sessions() {
         return this.__sessionsFactory();
       }
 
       get __users() {
         return this.__usersFactory();
+      }
+
+      constructor(...args) {
+        super(...args);
+        (0, _initializerDefineProperty2.default)(this, "__sessionsFactory", _descriptor, this);
+        (0, _initializerDefineProperty2.default)(this, "__usersFactory", _descriptor2, this);
+        (0, _initializerDefineProperty2.default)(this, "session", _descriptor3, this);
       }
 
       get currentUser() {
@@ -82,7 +82,7 @@ var _default = Module => {
         if (session == null) this.context.throw(UNAUTHORIZED);
         this.context.session = session;
         this.session = session;
-        if (!(await this.currentUser()).emailVerified) this.context.throw(UNAUTHORIZED, 'Unverified');
+        if (!(await this.currentUser).emailVerified) this.context.throw(UNAUTHORIZED, 'Unverified');
         return args;
       }
 

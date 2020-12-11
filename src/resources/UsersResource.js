@@ -18,8 +18,6 @@ import type { RecordInterface } from '../interfaces/RecordInterface';
 
 import jwt from 'jsonwebtoken';
 
-import parse from 'co-body';
-
 const {
   TOKEN_ALGORITHM, KEYID, ISSUER, REGISTRATION_IS_ALLOWED,
   PUBLIC_KEY, PRIVATE_KEY,
@@ -27,7 +25,7 @@ const {
 
 export default (Module) => {
   const {
-    SESSIONS,
+    SESSIONS, NON_RENDERABLE,
     Resource,
     ConfigurableMixin, BodyParseMixin,
     CheckSchemaVersionResourceMixin,
@@ -78,15 +76,26 @@ export default (Module) => {
       return this._sessionsFactory()
     }
 
-    @action async signup() {
+    @action async signup(): Promise<typeof NON_RENDERABLE> {
       console.log('signup');
       if(REGISTRATION_IS_ALLOWED == 'yes'){
         const payload = _.pick(this.context.request.body, ['email', 'password']);
-        const newUser = await this.collection.create(payload);
+        const newUser = await this.collection.build(payload);
+        newUser.password = payload.password;
         this.context.status = CREATED;
-        return newUser;
+        return NON_RENDERABLE;
       } else {
         this.context.throw(FORBIDDEN);
+      }
+    }
+
+    @action async create(): Promise<object> {
+      if (this.collection != null) {
+        const newUser = await this.collection.build(this.recordBody);
+        newUser.password = this.recordBody.password;
+        return await newUser.save();
+      } else {
+        return {};
       }
     }
 
@@ -103,18 +112,20 @@ export default (Module) => {
         : new RegExp(".*#{cookieDomain}.*").test(this.context.get('origin') || this.context.get('X-Forwarded-For'))
           ? [cookieDomain, "api.#{cookieDomain}"]
           : [null, null];
-      this.context.cookies.set(sessionCookie, '', {
-        httpOnly: yes,
-        maxAge: 1000,
-        domain: domain,
-      })
-      this.context.cookies.set(`${sessionCookie}ExpiredAt`, '', {
-        maxAge: 1000,
-        domain: domain,
-      })
-      if (oldDomain != null)
+      if (domain != null) {
         this.context.cookies.set(sessionCookie, '', {
-          httpOnly: yes,
+          httpOnly: true,
+          maxAge: 1000,
+          domain: domain,
+        })
+        this.context.cookies.set(`${sessionCookie}ExpiredAt`, '', {
+          maxAge: 1000,
+          domain: domain,
+        })
+      }
+      if (oldDomain != null) {
+        this.context.cookies.set(sessionCookie, '', {
+          httpOnly: true,
           maxAge: 1000,
           domain: oldDomain,
         })
@@ -122,20 +133,13 @@ export default (Module) => {
           maxAge: 1000,
           domain: oldDomain,
         })
+      }
       this.context.cookies.set(sessionCookie, '', {
-        httpOnly: yes,
+        httpOnly: true,
         maxAge: 1000,
       })
       this.context.cookies.set(`${sessionCookie}ExpiredAt`, '', {maxAge: 1000})
       this.context.status = NO_CONTENT;
-    }
-
-    @method async parseBody(...args) {
-      const { parsed, raw } = await parse(this.context._req, {returnRawBody: this.withRawBody});
-      console.log('??????????/parseBody', parsed);
-      this.context.request.body = parsed;
-      this.context.request.raw = raw;
-      return args;
     }
 
     @action async authorize() {
@@ -143,16 +147,14 @@ export default (Module) => {
       const {
         username, password,
       } = this.context.request.body;
-      const user = await this.collection.findBy({"@doc.email": username});
+      const user = await (await this.collection.findBy({"@doc.email": username})).first();
       if (user == null) {
         this.context.throw(UNAUTHORIZED, 'Credentials are incorrect')
       } else {
-        console.log('user', user);
         if (!user.verifyPassword(password)) this.context.throw(UNAUTHORIZED, 'Credentials are incorrect');
         if (!user.emailVerified) this.context.throw(FORBIDDEN, 'Unverified');
         if (user.isLocked) this.context.throw(FORBIDDEN, 'Locked');
-        // const hash = crypto.pbkdf2Sync(this.context.request.body.password, user.salt, 10000, 64, HASH_DIGEST).toString('hex');
-        // if (hash == user.passwordHash) {
+
         const data = {
           appState: null,
           authenticator: 'authenticator:self-hosted',
@@ -174,7 +176,7 @@ export default (Module) => {
         };
 
         const permissions = user.permissions || [];
-        const requestedScopes = this.context.request.body.scope || this.context.query.scope;
+        const requestedScopes = this.context.request.body.scope || this.context.query.scope || '';
         const filteredScopes = requestedScopes.split(' ').filter((x) =>
           x.includes(':')
         );
@@ -240,7 +242,6 @@ export default (Module) => {
 
         data.scope += ' ' + adminScopes.join(' ');
 
-        console.log('PRIVATE_KEY\n', PRIVATE_KEY);
         const token = jwt.sign(data, { key: PRIVATE_KEY }, {
           algorithm: TOKEN_ALGORITHM,
           keyid: KEYID,

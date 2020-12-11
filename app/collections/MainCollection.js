@@ -17,11 +17,13 @@ var _applyDecoratedDescriptor2 = _interopRequireDefault(require("@babel/runtime/
 // WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
 // the specific language governing rights and limitations under the License.
 var _default = Module => {
-  var _dec, _dec2, _dec3, _class, _class2, _init, _init2, _class3, _temp;
+  var _dec, _dec2, _dec3, _dec4, _dec5, _class, _class2, _init, _init2, _class3, _temp;
 
   const {
     Collection,
     MongoCollectionMixin,
+    QueryableMongoCollectionMixin,
+    QueryableCollectionMixin,
     GenerateUuidIdMixin,
     initialize,
     partOf,
@@ -29,7 +31,7 @@ var _default = Module => {
     nameBy,
     mixin
   } = Module.NS;
-  let MainCollection = (_dec = partOf(Module), _dec2 = mixin(MongoCollectionMixin), _dec3 = mixin(GenerateUuidIdMixin), initialize(_class = _dec(_class = _dec2(_class = _dec3(_class = (_class2 = (_temp = _class3 = class MainCollection extends Collection {}, _class3.__filename = __filename, _class3.object = {}, _temp), ((0, _applyDecoratedDescriptor2.default)(_class2, "__filename", [nameBy], (_init = Object.getOwnPropertyDescriptor(_class2, "__filename"), _init = _init ? _init.value : undefined, {
+  let MainCollection = (_dec = partOf(Module), _dec2 = mixin(QueryableMongoCollectionMixin), _dec3 = mixin(MongoCollectionMixin), _dec4 = mixin(QueryableCollectionMixin), _dec5 = mixin(GenerateUuidIdMixin), initialize(_class = _dec(_class = _dec2(_class = _dec3(_class = _dec4(_class = _dec5(_class = (_class2 = (_temp = _class3 = class MainCollection extends Collection {}, _class3.__filename = __filename, _class3.object = {}, _temp), ((0, _applyDecoratedDescriptor2.default)(_class2, "__filename", [nameBy], (_init = Object.getOwnPropertyDescriptor(_class2, "__filename"), _init = _init ? _init.value : undefined, {
     enumerable: true,
     configurable: true,
     writable: true,
@@ -43,7 +45,7 @@ var _default = Module => {
     initializer: function () {
       return _init2;
     }
-  }), _class2)), _class2)) || _class) || _class) || _class) || _class);
+  }), _class2)), _class2)) || _class) || _class) || _class) || _class) || _class) || _class);
 };
 
 exports.default = _default;

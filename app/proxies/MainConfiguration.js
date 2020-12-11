@@ -18,6 +18,10 @@ var _flowRuntime = _interopRequireDefault(require("flow-runtime"));
 // Software distributed under the License is distributed on an "AS IS" basis,
 // WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
 // the specific language governing rights and limitations under the License.
+const {
+  COOKIE_KEY
+} = process.env;
+
 var _default = Module => {
   var _dec, _class, _class2, _init, _init2, _class3, _temp;
 
@@ -30,6 +34,10 @@ var _default = Module => {
     nameBy
   } = Module.NS;
   let MainConfiguration = (_dec = partOf(Module), initialize(_class = _dec(_class = (_class2 = (_temp = _class3 = class MainConfiguration extends Configuration {
+    get cookieKey() {
+      return COOKIE_KEY;
+    }
+
     get manifestPath() {
       return '../package.json';
     }
@@ -52,7 +60,7 @@ var _default = Module => {
     initializer: function () {
       return _init2;
     }
-  }), _class2), (0, _applyDecoratedDescriptor2.default)(_class2.prototype, "manifestPath", [property], Object.getOwnPropertyDescriptor(_class2.prototype, "manifestPath"), _class2.prototype), (0, _applyDecoratedDescriptor2.default)(_class2.prototype, "configPath", [property], Object.getOwnPropertyDescriptor(_class2.prototype, "configPath"), _class2.prototype)), _class2)) || _class) || _class);
+  }), _class2), (0, _applyDecoratedDescriptor2.default)(_class2.prototype, "cookieKey", [property], Object.getOwnPropertyDescriptor(_class2.prototype, "cookieKey"), _class2.prototype), (0, _applyDecoratedDescriptor2.default)(_class2.prototype, "manifestPath", [property], Object.getOwnPropertyDescriptor(_class2.prototype, "manifestPath"), _class2.prototype), (0, _applyDecoratedDescriptor2.default)(_class2.prototype, "configPath", [property], Object.getOwnPropertyDescriptor(_class2.prototype, "configPath"), _class2.prototype)), _class2)) || _class) || _class);
 };
 
 exports.default = _default;

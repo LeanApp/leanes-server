@@ -60,12 +60,12 @@ export default (Module) => {
     @method fillNonRequired(... args) {
       this.emailVerified = this.emailVerified != null ? this.emailVerified : false;
       this.name = this.name || this.email;
-      this.nickname = this.nickname || email.split('@')[0];
+      this.nickname = this.nickname || this.email.split('@')[0];
       this.picture = this.picture || '';
       this.sub = this.sub || crypto.randomBytes(16).toString('hex');
       this.salt = makeHash('sha256', `${SECRET}|${uuid.v4()}`);
       this.isAdmin = this.isAdmin != null ? this.isAdmin : false;
-      this.isLocked = AUTO_LOCKING == 'yes';
+      this.isLocked = this.isAdmin ? false : AUTO_LOCKING == 'yes';
       return args;
     }
 

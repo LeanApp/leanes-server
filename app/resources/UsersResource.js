@@ -38,31 +38,27 @@ const RecordInterface = _flowRuntime.default.tdz(() => _RecordInterface2.RecordI
 const CollectionInterface = _flowRuntime.default.tdz(() => _CollectionInterface2.CollectionInterface);
 
 const {
-  ORIGINS,
-  HASH_DIGEST,
-  ITERATIONS,
   TOKEN_ALGORITHM,
   KEYID,
   ISSUER,
-  AUTO_LOCKING,
   REGISTRATION_IS_ALLOWED,
   PUBLIC_KEY,
-  PRIVATE_KEY,
-  SECRET,
-  DEFAULT_USERS
+  PRIVATE_KEY
 } = process.env;
 
 var _default = Module => {
-  var _dec, _dec2, _dec3, _dec4, _dec5, _dec6, _dec7, _dec8, _class, _class2, _init, _init2, _descriptor, _class3, _temp;
+  var _dec, _dec2, _dec3, _dec4, _dec5, _dec6, _dec7, _dec8, _dec9, _class, _class2, _init, _init2, _descriptor, _class3, _temp;
 
   const {
     SESSIONS,
+    NON_RENDERABLE,
     Resource,
     ConfigurableMixin,
     BodyParseMixin,
     CheckSchemaVersionResourceMixin,
     CheckApiVersionResourceMixin,
     CheckSessionsMixin,
+    QueryableResourceMixin,
     initialize,
     partOf,
     meta,
@@ -72,6 +68,7 @@ var _default = Module => {
     inject,
     chains,
     action,
+    method,
     Utils: {
       _,
       statuses
@@ -91,7 +88,7 @@ var _default = Module => {
     this.initialHook('checkSession', {
       only: ['signout']
     });
-  }), _dec2 = partOf(Module), _dec3 = mixin(CheckSessionsMixin), _dec4 = mixin(CheckSchemaVersionResourceMixin), _dec5 = mixin(CheckApiVersionResourceMixin), _dec6 = mixin(BodyParseMixin), _dec7 = mixin(ConfigurableMixin), _dec8 = inject(`Factory<${SESSIONS}>`), initialize(_class = _dec(_class = _dec2(_class = _dec3(_class = _dec4(_class = _dec5(_class = _dec6(_class = _dec7(_class = (_class2 = (_temp = _class3 = class UsersResource extends Resource {
+  }), _dec2 = partOf(Module), _dec3 = mixin(QueryableResourceMixin), _dec4 = mixin(CheckSessionsMixin), _dec5 = mixin(CheckSchemaVersionResourceMixin), _dec6 = mixin(CheckApiVersionResourceMixin), _dec7 = mixin(BodyParseMixin), _dec8 = mixin(ConfigurableMixin), _dec9 = inject(`Factory<${SESSIONS}>`), initialize(_class = _dec(_class = _dec2(_class = _dec3(_class = _dec4(_class = _dec5(_class = _dec6(_class = _dec7(_class = _dec8(_class = (_class2 = (_temp = _class3 = class UsersResource extends Resource {
     get entityName() {
       return 'user';
     }
@@ -111,11 +108,22 @@ var _default = Module => {
       if (REGISTRATION_IS_ALLOWED == 'yes') {
         const payload = _.pick(this.context.request.body, ['email', 'password']);
 
-        const newUser = await this.collection.create(payload);
+        const newUser = await this.collection.build(payload);
+        newUser.password = payload.password;
         this.context.status = CREATED;
-        return newUser;
+        return NON_RENDERABLE;
       } else {
         this.context.throw(FORBIDDEN);
+      }
+    }
+
+    async create() {
+      if (this.collection != null) {
+        const newUser = await this.collection.build(this.recordBody);
+        newUser.password = this.recordBody.password;
+        return await newUser.save();
+      } else {
+        return {};
       }
     }
 
@@ -127,26 +135,33 @@ var _default = Module => {
       } = this.configs;
       if (this.session != null && this.session.uid != null) await this.session.destroy();
       const [domain, oldDomain] = /(.*localhost.*)|(.*127\.0\.0\.1.*)/.test(this.context.get('origin') || this.context.get('X-Forwarded-For')) ? [this.context.hostname, null] : new RegExp(".*#{cookieDomain}.*").test(this.context.get('origin') || this.context.get('X-Forwarded-For')) ? [cookieDomain, "api.#{cookieDomain}"] : [null, null];
+
+      if (domain != null) {
+        this.context.cookies.set(sessionCookie, '', {
+          httpOnly: true,
+          maxAge: 1000,
+          domain: domain
+        });
+        this.context.cookies.set(`${sessionCookie}ExpiredAt`, '', {
+          maxAge: 1000,
+          domain: domain
+        });
+      }
+
+      if (oldDomain != null) {
+        this.context.cookies.set(sessionCookie, '', {
+          httpOnly: true,
+          maxAge: 1000,
+          domain: oldDomain
+        });
+        this.context.cookies.set(`${sessionCookie}ExpiredAt`, '', {
+          maxAge: 1000,
+          domain: oldDomain
+        });
+      }
+
       this.context.cookies.set(sessionCookie, '', {
-        httpOnly: yes,
-        maxAge: 1000,
-        domain: domain
-      });
-      this.context.cookies.set(`${sessionCookie}ExpiredAt`, '', {
-        maxAge: 1000,
-        domain: domain
-      });
-      if (oldDomain != null) this.context.cookies.set(sessionCookie, '', {
-        httpOnly: yes,
-        maxAge: 1000,
-        domain: oldDomain
-      });
-      this.context.cookies.set(`${sessionCookie}ExpiredAt`, '', {
-        maxAge: 1000,
-        domain: oldDomain
-      });
-      this.context.cookies.set(sessionCookie, '', {
-        httpOnly: yes,
+        httpOnly: true,
         maxAge: 1000
       });
       this.context.cookies.set(`${sessionCookie}ExpiredAt`, '', {
@@ -156,24 +171,21 @@ var _default = Module => {
     }
 
     async authorize() {
-      console.log('authorize');
+      console.log('authorize', this.context.request.body);
       const {
         username,
         password
       } = this.context.request.body;
-      const user = await this.collection.findBy({
-        email: username
-      });
+      const user = await (await this.collection.findBy({
+        "@doc.email": username
+      })).first();
 
       if (user == null) {
         this.context.throw(UNAUTHORIZED, 'Credentials are incorrect');
       } else {
-        console.log('user', user);
         if (!user.verifyPassword(password)) this.context.throw(UNAUTHORIZED, 'Credentials are incorrect');
         if (!user.emailVerified) this.context.throw(FORBIDDEN, 'Unverified');
-        if (user.isLocked) this.context.throw(FORBIDDEN, 'Locked'); // const hash = crypto.pbkdf2Sync(this.context.request.body.password, user.salt, 10000, 64, HASH_DIGEST).toString('hex');
-        // if (hash == user.passwordHash) {
-
+        if (user.isLocked) this.context.throw(FORBIDDEN, 'Locked');
         const data = {
           appState: null,
           authenticator: 'authenticator:self-hosted',
@@ -194,7 +206,7 @@ var _default = Module => {
           state: ''
         };
         const permissions = user.permissions || [];
-        const requestedScopes = this.context.request.body.scope || this.context.query.scope;
+        const requestedScopes = this.context.request.body.scope || this.context.query.scope || '';
         const filteredScopes = requestedScopes.split(' ').filter(x => x.includes(':'));
         const allScopes = filteredScopes.concat(permissions); // user broadcast publish
 
@@ -253,7 +265,6 @@ var _default = Module => {
 
         if (data.scope == null) data.scope = '';
         data.scope += ' ' + adminScopes.join(' ');
-        console.log('PRIVATE_KEY\n', PRIVATE_KEY);
 
         const token = _jsonwebtoken.default.sign(data, {
           key: PRIVATE_KEY
@@ -307,12 +318,12 @@ var _default = Module => {
     initializer: function () {
       return _init2;
     }
-  }), _class2), (0, _applyDecoratedDescriptor2.default)(_class2.prototype, "entityName", [property], Object.getOwnPropertyDescriptor(_class2.prototype, "entityName"), _class2.prototype), _descriptor = (0, _applyDecoratedDescriptor2.default)(_class2.prototype, "_sessionsFactory", [_dec8, property], {
+  }), _class2), (0, _applyDecoratedDescriptor2.default)(_class2.prototype, "entityName", [property], Object.getOwnPropertyDescriptor(_class2.prototype, "entityName"), _class2.prototype), _descriptor = (0, _applyDecoratedDescriptor2.default)(_class2.prototype, "_sessionsFactory", [_dec9, property], {
     configurable: true,
     enumerable: true,
     writable: true,
     initializer: null
-  }), (0, _applyDecoratedDescriptor2.default)(_class2.prototype, "_sessions", [property], Object.getOwnPropertyDescriptor(_class2.prototype, "_sessions"), _class2.prototype), (0, _applyDecoratedDescriptor2.default)(_class2.prototype, "signup", [action], Object.getOwnPropertyDescriptor(_class2.prototype, "signup"), _class2.prototype), (0, _applyDecoratedDescriptor2.default)(_class2.prototype, "signout", [action], Object.getOwnPropertyDescriptor(_class2.prototype, "signout"), _class2.prototype), (0, _applyDecoratedDescriptor2.default)(_class2.prototype, "authorize", [action], Object.getOwnPropertyDescriptor(_class2.prototype, "authorize"), _class2.prototype)), _class2)) || _class) || _class) || _class) || _class) || _class) || _class) || _class) || _class);
+  }), (0, _applyDecoratedDescriptor2.default)(_class2.prototype, "_sessions", [property], Object.getOwnPropertyDescriptor(_class2.prototype, "_sessions"), _class2.prototype), (0, _applyDecoratedDescriptor2.default)(_class2.prototype, "signup", [action], Object.getOwnPropertyDescriptor(_class2.prototype, "signup"), _class2.prototype), (0, _applyDecoratedDescriptor2.default)(_class2.prototype, "create", [action], Object.getOwnPropertyDescriptor(_class2.prototype, "create"), _class2.prototype), (0, _applyDecoratedDescriptor2.default)(_class2.prototype, "signout", [action], Object.getOwnPropertyDescriptor(_class2.prototype, "signout"), _class2.prototype), (0, _applyDecoratedDescriptor2.default)(_class2.prototype, "authorize", [action], Object.getOwnPropertyDescriptor(_class2.prototype, "authorize"), _class2.prototype)), _class2)) || _class) || _class) || _class) || _class) || _class) || _class) || _class) || _class) || _class);
 };
 
 exports.default = _default;

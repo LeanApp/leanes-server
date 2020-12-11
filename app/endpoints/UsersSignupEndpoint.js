@@ -22,22 +22,24 @@ var _applyDecoratedDescriptor2 = _interopRequireDefault(require("@babel/runtime/
 // You should have received a copy of the GNU Affero General Public License
 // along with leanes-server.  If not, see <https://www.gnu.org/licenses/>.
 var _default = Module => {
-  var _dec, _class, _class2, _init, _init2, _class3, _temp;
+  var _dec, _dec2, _class, _class2, _init, _init2, _class3, _temp;
 
   const {
     SwaggerEndpoint,
+    CrudEndpointMixin,
     initialize,
     partOf,
     meta,
     nameBy,
+    mixin,
     Utils: {
       joi
     }
   } = Module.NS;
-  let UsersSignupEndpoint = (_dec = partOf(Module), initialize(_class = _dec(_class = (_class2 = (_temp = _class3 = class UsersSignupEndpoint extends SwaggerEndpoint {
+  let UsersSignupEndpoint = (_dec = partOf(Module), _dec2 = mixin(CrudEndpointMixin), initialize(_class = _dec(_class = _dec2(_class = (_class2 = (_temp = _class3 = class UsersSignupEndpoint extends SwaggerEndpoint {
     constructor() {
       super(...arguments);
-      this.body(joi.object({
+      this.pathParam('v', this.versionSchema).body(joi.object({
         email: joi.string().min(2).optional(),
         password: joi.string().min(4).required()
       }).required(), 'Credentials').response(null).summary('Signup new user').description('Create a new user.');
@@ -57,7 +59,7 @@ var _default = Module => {
     initializer: function () {
       return _init2;
     }
-  }), _class2)), _class2)) || _class) || _class);
+  }), _class2)), _class2)) || _class) || _class) || _class);
 };
 
 exports.default = _default;

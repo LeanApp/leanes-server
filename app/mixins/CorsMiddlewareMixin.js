@@ -23,6 +23,10 @@ var _cors = _interopRequireDefault(require("@koa/cors"));
 //
 // You should have received a copy of the GNU Affero General Public License
 // along with leanes-server.  If not, see <https://www.gnu.org/licenses/>.
+const {
+  ORIGINS
+} = process.env;
+
 var _default = Module => {
   const {
     initializeMixin,
@@ -43,12 +47,7 @@ var _default = Module => {
             const allowMethods = 'GET, HEAD, PUT, POST, DELETE, OPTIONS, PATCH, COPY';
             const exposeHeaders = 'content-length, server';
             const maxAge = 1800;
-            let origins = this.configs.corsOrigins;
-
-            if (origins !== '*' && (origins != null ? origins.split : void 0)) {
-              origins = origins.split(', ');
-            }
-
+            const origins = ORIGINS !== '*' && (ORIGINS != null ? ORIGINS.split : void 0) ? ORIGINS.split(', ') : ORIGINS;
             const origin = origins == null || origins === '*' ? void 0 : ctx => {
               return origins.find(_origin => {
                 return _origin === ctx.get('Origin');

@@ -25,9 +25,11 @@ var _leanesMongoAddon = _interopRequireDefault(require("@leansdk/leanes-mongo-ad
 
 var _leanesRestfulAddon = _interopRequireWildcard(require("@leansdk/leanes-restful-addon"));
 
+var _leanesQueryableAddon = _interopRequireDefault(require("@leansdk/leanes-queryable-addon"));
+
 var _leanesSwaggerAddon = _interopRequireDefault(require("@leansdk/leanes-swagger-addon"));
 
-var _dec, _dec2, _dec3, _dec4, _dec5, _dec6, _dec7, _dec8, _dec9, _class, _class2, _init, _descriptor, _descriptor2, _descriptor3, _descriptor4, _descriptor5, _descriptor6, _class3, _temp;
+var _dec, _dec2, _dec3, _dec4, _dec5, _dec6, _dec7, _dec8, _dec9, _dec10, _class, _class2, _init, _descriptor, _descriptor2, _descriptor3, _descriptor4, _descriptor5, _descriptor6, _class3, _temp;
 
 const {
   initialize,
@@ -38,7 +40,7 @@ const {
   plugin,
   loadFiles
 } = _leanes.default.NS;
-let ServerApp = (_dec = plugin(_leanesSwaggerAddon.default), _dec2 = plugin(_leanesRestfulAddon.TemplatableModule), _dec3 = plugin(_leanesRestfulAddon.default), _dec4 = plugin(_leanesMongoAddon.default), _dec5 = plugin(_leanesMapperAddon.MigratableModule), _dec6 = plugin(_leanesMapperAddon.default), _dec7 = plugin(_leanesConfigurableAddon.default), _dec8 = plugin(_leanesFsUtilsAddon.default), _dec9 = resolver(require, name => require(name)), initialize(_class = loadFiles(_class = (0, _leanesRestfulAddon.loadTemplates)(_class = (0, _leanesMapperAddon.loadMigrations)(_class = _dec(_class = _dec2(_class = _dec3(_class = _dec4(_class = _dec5(_class = _dec6(_class = _dec7(_class = _dec8(_class = _dec9(_class = (_class2 = (_temp = _class3 = class ServerApp extends _leanes.default {
+let ServerApp = (_dec = plugin(_leanesSwaggerAddon.default), _dec2 = plugin(_leanesQueryableAddon.default), _dec3 = plugin(_leanesRestfulAddon.TemplatableModule), _dec4 = plugin(_leanesRestfulAddon.default), _dec5 = plugin(_leanesMongoAddon.default), _dec6 = plugin(_leanesMapperAddon.MigratableModule), _dec7 = plugin(_leanesMapperAddon.default), _dec8 = plugin(_leanesConfigurableAddon.default), _dec9 = plugin(_leanesFsUtilsAddon.default), _dec10 = resolver(require, name => require(name)), initialize(_class = loadFiles(_class = (0, _leanesRestfulAddon.loadTemplates)(_class = (0, _leanesMapperAddon.loadMigrations)(_class = _dec(_class = _dec2(_class = _dec3(_class = _dec4(_class = _dec5(_class = _dec6(_class = _dec7(_class = _dec8(_class = _dec9(_class = _dec10(_class = (_class2 = (_temp = _class3 = class ServerApp extends _leanes.default {
   constructor(...args) {
     super(...args);
     (0, _initializerDefineProperty2.default)(this, "ROOT", _descriptor, this);
@@ -98,6 +100,6 @@ let ServerApp = (_dec = plugin(_leanesSwaggerAddon.default), _dec2 = plugin(_lea
   initializer: function () {
     return 'SessionsCollection';
   }
-})), _class2)) || _class) || _class) || _class) || _class) || _class) || _class) || _class) || _class) || _class) || _class) || _class) || _class) || _class);
+})), _class2)) || _class) || _class) || _class) || _class) || _class) || _class) || _class) || _class) || _class) || _class) || _class) || _class) || _class) || _class);
 var _default = ServerApp;
 exports.default = _default;

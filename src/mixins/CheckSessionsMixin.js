@@ -59,7 +59,7 @@ export default (Module) => {
         if (session == null) this.context.throw(UNAUTHORIZED);
         this.context.session = session;
         this.session = session;
-        if (!(await this.currentUser()).emailVerified) this.context.throw(UNAUTHORIZED, 'Unverified');
+        if (!(await this.currentUser).emailVerified) this.context.throw(UNAUTHORIZED, 'Unverified');
         return args;
       }
     }

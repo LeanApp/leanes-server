@@ -30,16 +30,9 @@ var _flowRuntime = _interopRequireDefault(require("flow-runtime"));
 // You should have received a copy of the GNU Affero General Public License
 // along with leanes-server.  If not, see <https://www.gnu.org/licenses/>.
 const {
-  ORIGINS,
   HASH_DIGEST,
   ITERATIONS,
-  TOKEN_ALGORITHM,
-  KEYID,
-  ISSUER,
   AUTO_LOCKING,
-  REGISTRATION_IS_ALLOWED,
-  PUBLIC_KEY,
-  PRIVATE_KEY,
   SECRET
 } = process.env;
 
@@ -59,7 +52,8 @@ var _default = Module => {
     method,
     chains,
     Utils: {
-      uuid
+      uuid,
+      makeHash
     }
   } = Module.NS;
   let UserRecord = (_dec = chains(['create'], function () {
@@ -108,22 +102,22 @@ var _default = Module => {
     fillNonRequired(...args) {
       this.emailVerified = this.emailVerified != null ? this.emailVerified : false;
       this.name = this.name || this.email;
-      this.nickname = this.nickname || email.split('@')[0];
+      this.nickname = this.nickname || this.email.split('@')[0];
       this.picture = this.picture || '';
       this.sub = this.sub || _crypto.default.randomBytes(16).toString('hex');
-      this.salt = `${SECRET}|${uuid.v4()}`;
+      this.salt = makeHash('sha256', `${SECRET}|${uuid.v4()}`);
       this.isAdmin = this.isAdmin != null ? this.isAdmin : false;
-      this.isLocked = AUTO_LOCKING == 'yes';
+      this.isLocked = this.isAdmin ? false : AUTO_LOCKING == 'yes';
       return args;
     }
 
     hashPassword(...args) {
-      this.passwordHash = _crypto.default.pbkdf2Sync(this.password, this.salt, ITERATIONS, 64, HASH_DIGEST).toString('hex');
+      this.passwordHash = _crypto.default.pbkdf2Sync(this.password, this.salt, Number(ITERATIONS), 64, HASH_DIGEST).toString('hex');
       return args;
     }
 
     verifyPassword(password) {
-      return this.passwordHash == _crypto.default.pbkdf2Sync(password, this.salt, ITERATIONS, 64, HASH_DIGEST).toString('hex');
+      return this.passwordHash == _crypto.default.pbkdf2Sync(password, this.salt, Number(ITERATIONS), 64, HASH_DIGEST).toString('hex');
     }
 
   }, _class3.__filename = __filename, _class3.object = {}, _temp), ((0, _applyDecoratedDescriptor2.default)(_class2, "__filename", [nameBy], (_init = Object.getOwnPropertyDescriptor(_class2, "__filename"), _init = _init ? _init.value : undefined, {
