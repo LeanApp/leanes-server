@@ -9,7 +9,7 @@
 // the specific language governing rights and limitations under the License.
 
 const program = require('commander')
-const path = process.env.ENV === 'development' ? "./dev" : "./app"
+const path = process.env.ENV === 'development' ? "./dev" : "./prod"
 const Module = require(path).default
 
 async function startup(Module, app) {

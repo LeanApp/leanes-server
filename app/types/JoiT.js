@@ -1,12 +1,3 @@
-"use strict";
-
-var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
-
-exports.__esModule = true;
-exports.JoiT = void 0;
-
-var _flowRuntime = _interopRequireDefault(require("flow-runtime"));
-
 // This file is part of LeanES.
 //
 // LeanES is free software: you can redistribute it and/or modify
@@ -21,8 +12,25 @@ var _flowRuntime = _interopRequireDefault(require("flow-runtime"));
 //
 // You should have received a copy of the GNU Lesser General Public License
 // along with LeanES.  If not, see <https://www.gnu.org/licenses/>.
-const Types = _flowRuntime.default.type("Types", _flowRuntime.default.union(_flowRuntime.default.string("any"), _flowRuntime.default.string("alternatives"), _flowRuntime.default.string("array"), _flowRuntime.default.string("boolean"), _flowRuntime.default.string("binary"), _flowRuntime.default.string("date"), _flowRuntime.default.string("function"), _flowRuntime.default.string("link"), _flowRuntime.default.string("number"), _flowRuntime.default.string("object"), _flowRuntime.default.string("string"), _flowRuntime.default.string("symbol")));
 
-const JoiT = _flowRuntime.default.type("JoiT", _flowRuntime.default.object(_flowRuntime.default.property("$_super", _flowRuntime.default.ref("object")), _flowRuntime.default.property("$_terms", _flowRuntime.default.ref("object")), _flowRuntime.default.property("$_root", _flowRuntime.default.ref("object")), _flowRuntime.default.property("_flags", _flowRuntime.default.ref("object")), _flowRuntime.default.property("type", _flowRuntime.default.union(Types, _flowRuntime.default.string()))));
+type Types =
+  | 'any'
+  | 'alternatives'
+  | 'array'
+  | 'boolean'
+  | 'binary'
+  | 'date'
+  | 'function'
+  | 'link'
+  | 'number'
+  | 'object'
+  | 'string'
+  | 'symbol';
 
-exports.JoiT = JoiT;
+export type JoiT = {
+  $_super: object,
+  $_terms: object,
+  $_root: object,
+  _flags: object,
+  type: Types | string,
+}

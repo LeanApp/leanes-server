@@ -1,59 +1,26 @@
-"use strict";
+// This file is part of leanes-server.
+//
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
+//
+// Software distributed under the License is distributed on an "AS IS" basis,
+// WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
+// the specific language governing rights and limitations under the License.
 
-var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+import LeanES from '__LeanES__';
+import FsUtilsAddon from '__FsUtilsAddon__';
 
-exports.__esModule = true;
-exports.default = void 0;
+const { initialize, meta, nameBy, resolver, constant, plugin, loadFiles } = LeanES.NS;
 
-var _initializerDefineProperty2 = _interopRequireDefault(require("@babel/runtime/helpers/initializerDefineProperty"));
+@initialize
+@loadFiles
+@plugin(FsUtilsAddon)
+@resolver(require, name => require(name))
+class Logger extends LeanES {
+  @nameBy static  __filename = 'Logger';
+  @meta static object = {};
+  @constant ROOT = __dirname;
+};
 
-var _initializerWarningHelper2 = _interopRequireDefault(require("@babel/runtime/helpers/initializerWarningHelper"));
-
-var _applyDecoratedDescriptor2 = _interopRequireDefault(require("@babel/runtime/helpers/applyDecoratedDescriptor"));
-
-var _leanes = _interopRequireDefault(require("@leansdk/leanes"));
-
-var _leanesFsUtilsAddon = _interopRequireDefault(require("@leansdk/leanes-fs-utils-addon"));
-
-var _dec, _dec2, _class, _class2, _init, _init2, _descriptor, _class3, _temp;
-
-const {
-  initialize,
-  meta,
-  nameBy,
-  resolver,
-  constant,
-  plugin,
-  loadFiles
-} = _leanes.default.NS;
-let Logger = (_dec = plugin(_leanesFsUtilsAddon.default), _dec2 = resolver(require, name => require(name)), initialize(_class = loadFiles(_class = _dec(_class = _dec2(_class = (_class2 = (_temp = _class3 = class Logger extends _leanes.default {
-  constructor(...args) {
-    super(...args);
-    (0, _initializerDefineProperty2.default)(this, "ROOT", _descriptor, this);
-  }
-
-}, _class3.__filename = 'Logger', _class3.object = {}, _temp), ((0, _applyDecoratedDescriptor2.default)(_class2, "__filename", [nameBy], (_init = Object.getOwnPropertyDescriptor(_class2, "__filename"), _init = _init ? _init.value : undefined, {
-  enumerable: true,
-  configurable: true,
-  writable: true,
-  initializer: function () {
-    return _init;
-  }
-}), _class2), (0, _applyDecoratedDescriptor2.default)(_class2, "object", [meta], (_init2 = Object.getOwnPropertyDescriptor(_class2, "object"), _init2 = _init2 ? _init2.value : undefined, {
-  enumerable: true,
-  configurable: true,
-  writable: true,
-  initializer: function () {
-    return _init2;
-  }
-}), _class2), _descriptor = (0, _applyDecoratedDescriptor2.default)(_class2.prototype, "ROOT", [constant], {
-  configurable: true,
-  enumerable: true,
-  writable: true,
-  initializer: function () {
-    return __dirname;
-  }
-})), _class2)) || _class) || _class) || _class) || _class);
-;
-var _default = Logger;
-exports.default = _default;
+export default Logger;

@@ -1,16 +1,3 @@
-"use strict";
-
-var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
-
-exports.__esModule = true;
-exports.RouterInterface = void 0;
-
-var _RouterRouteT2 = require("../types/RouterRouteT");
-
-var _RouteOptionsT2 = require("../types/RouteOptionsT");
-
-var _flowRuntime = _interopRequireDefault(require("flow-runtime"));
-
 // This file is part of leanes-restful-addon.
 //
 // leanes-restful-addon is free software: you can redistribute it and/or modify
@@ -25,12 +12,83 @@ var _flowRuntime = _interopRequireDefault(require("flow-runtime"));
 //
 // You should have received a copy of the GNU Lesser General Public License
 // along with leanes-restful-addon.  If not, see <https://www.gnu.org/licenses/>.
-const RouteOptionsT = _flowRuntime.default.tdz(() => _RouteOptionsT2.RouteOptionsT);
 
-const RouterRouteT = _flowRuntime.default.tdz(() => _RouterRouteT2.RouterRouteT);
+import type { RouterRouteT } from '../types/RouterRouteT';
+import type { RouteOptionsT } from '../types/RouteOptionsT';
 
-const RouterInterface = _flowRuntime.default.type("RouterInterface", RouterInterface => {
-  return _flowRuntime.default.object(_flowRuntime.default.property("map", _flowRuntime.default.function(_flowRuntime.default.return(_flowRuntime.default.void()))), _flowRuntime.default.property("externals", _flowRuntime.default.function(_flowRuntime.default.return(_flowRuntime.default.array(_flowRuntime.default.nullable(RouterInterface))))), _flowRuntime.default.property("root", _flowRuntime.default.function(_flowRuntime.default.param("opts", _flowRuntime.default.object(_flowRuntime.default.property("to", _flowRuntime.default.nullable(_flowRuntime.default.string())), _flowRuntime.default.property("at", _flowRuntime.default.nullable(_flowRuntime.default.union(_flowRuntime.default.string("collection"), _flowRuntime.default.string("member")))), _flowRuntime.default.property("resource", _flowRuntime.default.nullable(_flowRuntime.default.string())), _flowRuntime.default.property("action", _flowRuntime.default.nullable(_flowRuntime.default.string())))), _flowRuntime.default.return(_flowRuntime.default.void()))), _flowRuntime.default.property("defineMethod", _flowRuntime.default.function(_flowRuntime.default.param("container", _flowRuntime.default.array(_flowRuntime.default.ref(RouterRouteT))), _flowRuntime.default.param("method", _flowRuntime.default.string()), _flowRuntime.default.param("path", _flowRuntime.default.string()), _flowRuntime.default.param("opts", _flowRuntime.default.nullable(_flowRuntime.default.ref(RouteOptionsT))), _flowRuntime.default.return(_flowRuntime.default.void()))), _flowRuntime.default.property("get", _flowRuntime.default.function(_flowRuntime.default.param("asPath", _flowRuntime.default.string()), _flowRuntime.default.param("aoOpts", _flowRuntime.default.nullable(_flowRuntime.default.ref(RouteOptionsT))), _flowRuntime.default.return(_flowRuntime.default.void()))), _flowRuntime.default.property("post", _flowRuntime.default.function(_flowRuntime.default.param("asPath", _flowRuntime.default.string()), _flowRuntime.default.param("aoOpts", _flowRuntime.default.nullable(_flowRuntime.default.ref(RouteOptionsT))), _flowRuntime.default.return(_flowRuntime.default.void()))), _flowRuntime.default.property("put", _flowRuntime.default.function(_flowRuntime.default.param("asPath", _flowRuntime.default.string()), _flowRuntime.default.param("aoOpts", _flowRuntime.default.nullable(_flowRuntime.default.ref(RouteOptionsT))), _flowRuntime.default.return(_flowRuntime.default.void()))), _flowRuntime.default.property("delete", _flowRuntime.default.function(_flowRuntime.default.param("asPath", _flowRuntime.default.string()), _flowRuntime.default.param("aoOpts", _flowRuntime.default.nullable(_flowRuntime.default.ref(RouteOptionsT))), _flowRuntime.default.return(_flowRuntime.default.void()))), _flowRuntime.default.property("head", _flowRuntime.default.function(_flowRuntime.default.param("asPath", _flowRuntime.default.string()), _flowRuntime.default.param("aoOpts", _flowRuntime.default.nullable(_flowRuntime.default.ref(RouteOptionsT))), _flowRuntime.default.return(_flowRuntime.default.void()))), _flowRuntime.default.property("options", _flowRuntime.default.function(_flowRuntime.default.param("asPath", _flowRuntime.default.string()), _flowRuntime.default.param("aoOpts", _flowRuntime.default.nullable(_flowRuntime.default.ref(RouteOptionsT))), _flowRuntime.default.return(_flowRuntime.default.void()))), _flowRuntime.default.property("patch", _flowRuntime.default.function(_flowRuntime.default.param("asPath", _flowRuntime.default.string()), _flowRuntime.default.param("aoOpts", _flowRuntime.default.nullable(_flowRuntime.default.ref(RouteOptionsT))), _flowRuntime.default.return(_flowRuntime.default.void()))), _flowRuntime.default.property("resource", _flowRuntime.default.function(_flowRuntime.default.param("asName", _flowRuntime.default.string()), _flowRuntime.default.param("aoOpts", _flowRuntime.default.nullable(_flowRuntime.default.union(_flowRuntime.default.object(_flowRuntime.default.property("path", _flowRuntime.default.nullable(_flowRuntime.default.string())), _flowRuntime.default.property("module", _flowRuntime.default.nullable(_flowRuntime.default.string())), _flowRuntime.default.property("only", _flowRuntime.default.nullable(_flowRuntime.default.union(_flowRuntime.default.string(), _flowRuntime.default.array(_flowRuntime.default.string())))), _flowRuntime.default.property("via", _flowRuntime.default.nullable(_flowRuntime.default.union(_flowRuntime.default.string(), _flowRuntime.default.array(_flowRuntime.default.string())))), _flowRuntime.default.property("except", _flowRuntime.default.nullable(_flowRuntime.default.union(_flowRuntime.default.string(), _flowRuntime.default.array(_flowRuntime.default.string())))), _flowRuntime.default.property("tag", _flowRuntime.default.nullable(_flowRuntime.default.string())), _flowRuntime.default.property("templates", _flowRuntime.default.nullable(_flowRuntime.default.string())), _flowRuntime.default.property("param", _flowRuntime.default.nullable(_flowRuntime.default.string())), _flowRuntime.default.property("at", _flowRuntime.default.nullable(_flowRuntime.default.union(_flowRuntime.default.string("collection"), _flowRuntime.default.string("member")))), _flowRuntime.default.property("resource", _flowRuntime.default.nullable(_flowRuntime.default.string())), _flowRuntime.default.property("above", _flowRuntime.default.nullable(_flowRuntime.default.ref("object")))), _flowRuntime.default.function()))), _flowRuntime.default.param("lambda", _flowRuntime.default.nullable(_flowRuntime.default.function())), _flowRuntime.default.return(_flowRuntime.default.void()))), _flowRuntime.default.property("namespace", _flowRuntime.default.function(_flowRuntime.default.param("asName", _flowRuntime.default.nullable(_flowRuntime.default.string())), _flowRuntime.default.param("aoOpts", _flowRuntime.default.union(_flowRuntime.default.object(_flowRuntime.default.property("module", _flowRuntime.default.nullable(_flowRuntime.default.string())), _flowRuntime.default.property("prefix", _flowRuntime.default.nullable(_flowRuntime.default.string())), _flowRuntime.default.property("tag", _flowRuntime.default.nullable(_flowRuntime.default.string())), _flowRuntime.default.property("templates", _flowRuntime.default.nullable(_flowRuntime.default.string())), _flowRuntime.default.property("at", _flowRuntime.default.nullable(_flowRuntime.default.union(_flowRuntime.default.string("collection"), _flowRuntime.default.string("member")))), _flowRuntime.default.property("above", _flowRuntime.default.nullable(_flowRuntime.default.ref("object")))), _flowRuntime.default.function())), _flowRuntime.default.param("lambda", _flowRuntime.default.nullable(_flowRuntime.default.function())), _flowRuntime.default.return(_flowRuntime.default.void()))), _flowRuntime.default.property("member", _flowRuntime.default.function(_flowRuntime.default.param("lambda", _flowRuntime.default.function()), _flowRuntime.default.return(_flowRuntime.default.void()))), _flowRuntime.default.property("collection", _flowRuntime.default.function(_flowRuntime.default.param("lambda", _flowRuntime.default.function()), _flowRuntime.default.return(_flowRuntime.default.void()))), _flowRuntime.default.property("resources", _flowRuntime.default.array(RouterInterface)), _flowRuntime.default.property("routes", _flowRuntime.default.array(_flowRuntime.default.object(_flowRuntime.default.property("method", _flowRuntime.default.string()), _flowRuntime.default.property("path", _flowRuntime.default.string()), _flowRuntime.default.property("resource", _flowRuntime.default.string()), _flowRuntime.default.property("action", _flowRuntime.default.string()), _flowRuntime.default.property("tag", _flowRuntime.default.string()), _flowRuntime.default.property("template", _flowRuntime.default.string()), _flowRuntime.default.property("keyName", _flowRuntime.default.nullable(_flowRuntime.default.string())), _flowRuntime.default.property("entityName", _flowRuntime.default.string()), _flowRuntime.default.property("recordName", _flowRuntime.default.nullable(_flowRuntime.default.string()))))));
-});
+export interface RouterInterface {
+  map(): void;
+  externals(): Array<?RouterInterface>;
 
-exports.RouterInterface = RouterInterface;
+  root(opts: {to: ?string, at: ?('collection' | 'member'), resource: ?string, action: ?string}): void;
+
+  defineMethod(
+    container: Array<RouterRouteT>,
+    method: string,
+    path: string,
+    opts: ?RouteOptionsT
+  ): void;
+
+  'get'(asPath: string, aoOpts: ?RouteOptionsT): void;
+
+  post(asPath: string, aoOpts: ?RouteOptionsT): void;
+
+  put(asPath: string, aoOpts: ?RouteOptionsT): void;
+
+  'delete'(asPath: string, aoOpts: ?RouteOptionsT): void;
+
+  head(asPath: string, aoOpts: ?RouteOptionsT): void;
+
+  options(asPath: string, aoOpts: ?RouteOptionsT): void;
+
+  patch(asPath: string, aoOpts: ?RouteOptionsT): void;
+
+  resource(
+    asName: string,
+    aoOpts: ?({
+      path: ?string,
+      module: ?string,
+      only: ?(string | string[]),
+      via: ?(string | string[]),
+      except: ?(string | string[]),
+      tag: ?string,
+      templates: ?string,
+      param: ?string,
+      at: ?('collection' | 'member'),
+      resource: ?string,
+      above: ?object
+    } | Function),
+    lambda: ?Function
+  ): void;
+
+  namespace(
+    asName: ?string,
+    aoOpts: ({
+      module: ?string,
+      prefix: ?string,
+      tag: ?string,
+      templates: ?string,
+      at: ?('collection' | 'member'),
+      above: ?object
+    } | Function),
+    lambda: ?Function
+  ): void;
+
+  member(lambda: Function): void;
+
+  collection(lambda: Function): void;
+
+  +resources: Array<RouterInterface>;
+
+  +routes: Array<{
+    method: string,
+    path: string,
+    resource: string,
+    action: string,
+    tag: string,
+    template: string,
+    keyName: ?string,
+    entityName: string,
+    recordName: ?string
+  }>;
+}

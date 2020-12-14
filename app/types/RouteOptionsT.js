@@ -1,12 +1,3 @@
-"use strict";
-
-var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
-
-exports.__esModule = true;
-exports.RouteOptionsT = void 0;
-
-var _flowRuntime = _interopRequireDefault(require("flow-runtime"));
-
 // This file is part of leanes-restful-addon.
 //
 // leanes-restful-addon is free software: you can redistribute it and/or modify
@@ -21,6 +12,15 @@ var _flowRuntime = _interopRequireDefault(require("flow-runtime"));
 //
 // You should have received a copy of the GNU Lesser General Public License
 // along with leanes-restful-addon.  If not, see <https://www.gnu.org/licenses/>.
-const RouteOptionsT = _flowRuntime.default.type("RouteOptionsT", _flowRuntime.default.object(_flowRuntime.default.property("to", _flowRuntime.default.nullable(_flowRuntime.default.string()), true), _flowRuntime.default.property("at", _flowRuntime.default.nullable(_flowRuntime.default.union(_flowRuntime.default.string("collection"), _flowRuntime.default.string("member"))), true), _flowRuntime.default.property("resource", _flowRuntime.default.nullable(_flowRuntime.default.string()), true), _flowRuntime.default.property("action", _flowRuntime.default.nullable(_flowRuntime.default.string()), true), _flowRuntime.default.property("tag", _flowRuntime.default.nullable(_flowRuntime.default.string()), true), _flowRuntime.default.property("template", _flowRuntime.default.nullable(_flowRuntime.default.string()), true), _flowRuntime.default.property("keyName", _flowRuntime.default.nullable(_flowRuntime.default.string()), true), _flowRuntime.default.property("entityName", _flowRuntime.default.nullable(_flowRuntime.default.string()), true), _flowRuntime.default.property("recordName", _flowRuntime.default.nullable(_flowRuntime.default.string()), true)));
 
-exports.RouteOptionsT = RouteOptionsT;
+export type RouteOptionsT = {
+  to?: ?string,
+  at?: ?('collection' | 'member'),
+  resource?: ?string,
+  action?: ?string,
+  tag?: ?string,
+  template?: ?string,
+  keyName?: ?string,
+  entityName?: ?string,
+  recordName?: ?string
+}

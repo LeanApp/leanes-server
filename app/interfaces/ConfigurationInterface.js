@@ -1,12 +1,3 @@
-"use strict";
-
-var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
-
-exports.__esModule = true;
-exports.ConfigurationInterface = void 0;
-
-var _flowRuntime = _interopRequireDefault(require("flow-runtime"));
-
 // This file is part of leanes-configurable-addon.
 //
 // leanes-configurable-addon is free software: you can redistribute it and/or modify
@@ -21,6 +12,25 @@ var _flowRuntime = _interopRequireDefault(require("flow-runtime"));
 //
 // You should have received a copy of the GNU Lesser General Public License
 // along with leanes-configurable-addon.  If not, see <https://www.gnu.org/licenses/>.
-const ConfigurationInterface = _flowRuntime.default.type("ConfigurationInterface", _flowRuntime.default.object(_flowRuntime.default.property("_configI", _flowRuntime.default.string("ConfigurationInterface")), _flowRuntime.default.property("root", _flowRuntime.default.string()), _flowRuntime.default.property("environment", _flowRuntime.default.string()), _flowRuntime.default.property("name", _flowRuntime.default.nullable(_flowRuntime.default.string())), _flowRuntime.default.property("description", _flowRuntime.default.nullable(_flowRuntime.default.string())), _flowRuntime.default.property("license", _flowRuntime.default.nullable(_flowRuntime.default.string())), _flowRuntime.default.property("version", _flowRuntime.default.nullable(_flowRuntime.default.string())), _flowRuntime.default.property("keywords", _flowRuntime.default.nullable(_flowRuntime.default.array(_flowRuntime.default.string()))), _flowRuntime.default.property("manifestPath", _flowRuntime.default.string()), _flowRuntime.default.property("configPath", _flowRuntime.default.string())));
 
-exports.ConfigurationInterface = ConfigurationInterface;
+export interface ConfigurationInterface {
+  _configI: 'ConfigurationInterface';
+
+  root: string;
+
+  environment: string;
+
+  name: ?string;
+
+  description: ?string;
+
+  license: ?string;
+
+  version: ?string;
+
+  keywords: ?string[];
+
+  manifestPath: string;
+
+  configPath: string;
+}

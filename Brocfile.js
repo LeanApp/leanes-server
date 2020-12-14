@@ -13,7 +13,7 @@ const esTranspiler = require('broccoli-babel-transpiler');
 const replacer = require('broccoli-string-replace');
 const WatchedDir = require('broccoli-source').WatchedDir;
 
-const appRoot = __dirname + '/src';
+const appRoot = __dirname + '/app';
 
 const devJS = replacer(new WatchedDir(appRoot), {
   files: [ '**/*.js' ],

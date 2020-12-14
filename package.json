@@ -9,7 +9,7 @@
     "dev_build": "broccoli build --output-path dev",
     "dev_migrate": "ENV=development node --require source-map-support/register --trace-warnings migrate",
     "dev_rollback": "ENV=development node --require source-map-support/register --trace-warnings rollback",
-    "build": "broccoli build --prod --output-path app",
+    "build": "broccoli build --prod --output-path prod",
     "migrate": "node migrate",
     "rollback": "node rollback",
     "start": "pm2 start index.js",

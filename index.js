@@ -8,7 +8,7 @@
 // WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
 // the specific language governing rights and limitations under the License.
 
-const path = process.env.ENV === 'development' ? "./dev" : "./app"
+const path = process.env.ENV === 'development' ? "./dev" : "./prod"
 const Module = require(path).default
 
 const initialState = {};

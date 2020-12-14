@@ -1,14 +1,3 @@
-"use strict";
-
-var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
-
-exports.__esModule = true;
-exports.CollectionInterface = void 0;
-
-var _CursorInterface2 = require("./CursorInterface");
-
-var _flowRuntime = _interopRequireDefault(require("flow-runtime"));
-
 // This file is part of leanes-mapper-addon.
 //
 // leanes-mapper-addon is free software: you can redistribute it and/or modify
@@ -23,12 +12,53 @@ var _flowRuntime = _interopRequireDefault(require("flow-runtime"));
 //
 // You should have received a copy of the GNU Lesser General Public License
 // along with leanes-mapper-addon.  If not, see <https://www.gnu.org/licenses/>.
+
 // import type { RecordInterface } from './RecordInterface';
-const CursorInterface = _flowRuntime.default.tdz(() => _CursorInterface2.CursorInterface);
+import type { CursorInterface } from './CursorInterface';
 
-const CollectionInterface = _flowRuntime.default.type("CollectionInterface", CollectionInterface => {
-  const T = CollectionInterface.typeParameter("T");
-  return _flowRuntime.default.object(_flowRuntime.default.property("collectionName", _flowRuntime.default.function(_flowRuntime.default.return(_flowRuntime.default.string()))), _flowRuntime.default.property("collectionPrefix", _flowRuntime.default.function(_flowRuntime.default.return(_flowRuntime.default.string()))), _flowRuntime.default.property("collectionFullName", _flowRuntime.default.function(_flowRuntime.default.param("asName", _flowRuntime.default.nullable(_flowRuntime.default.string())), _flowRuntime.default.return(_flowRuntime.default.string()))), _flowRuntime.default.property("recordHasBeenChanged", _flowRuntime.default.function(_flowRuntime.default.param("asType", _flowRuntime.default.string()), _flowRuntime.default.param("aoData", _flowRuntime.default.ref("object")), _flowRuntime.default.return(_flowRuntime.default.void()))), _flowRuntime.default.property("generateId", _flowRuntime.default.function(_flowRuntime.default.return(_flowRuntime.default.ref("Promise", _flowRuntime.default.union(_flowRuntime.default.string(), _flowRuntime.default.number()))))), _flowRuntime.default.property("build", _flowRuntime.default.function(_flowRuntime.default.param("properties", _flowRuntime.default.ref("object")), _flowRuntime.default.return(_flowRuntime.default.ref("Promise", T)))), _flowRuntime.default.property("create", _flowRuntime.default.function(_flowRuntime.default.param("properties", _flowRuntime.default.ref("object")), _flowRuntime.default.return(_flowRuntime.default.ref("Promise", T)))), _flowRuntime.default.property("push", _flowRuntime.default.function(_flowRuntime.default.param("aoRecord", T), _flowRuntime.default.return(_flowRuntime.default.ref("Promise", T)))), _flowRuntime.default.property("delete", _flowRuntime.default.function(_flowRuntime.default.param("id", _flowRuntime.default.union(_flowRuntime.default.string(), _flowRuntime.default.number())), _flowRuntime.default.return(_flowRuntime.default.ref("Promise", _flowRuntime.default.void())))), _flowRuntime.default.property("destroy", _flowRuntime.default.function(_flowRuntime.default.param("id", _flowRuntime.default.union(_flowRuntime.default.string(), _flowRuntime.default.number())), _flowRuntime.default.return(_flowRuntime.default.ref("Promise", _flowRuntime.default.void())))), _flowRuntime.default.property("remove", _flowRuntime.default.function(_flowRuntime.default.param("id", _flowRuntime.default.union(_flowRuntime.default.string(), _flowRuntime.default.number())), _flowRuntime.default.return(_flowRuntime.default.ref("Promise", _flowRuntime.default.void())))), _flowRuntime.default.property("find", _flowRuntime.default.function(_flowRuntime.default.param("id", _flowRuntime.default.union(_flowRuntime.default.string(), _flowRuntime.default.number())), _flowRuntime.default.return(_flowRuntime.default.ref("Promise", _flowRuntime.default.nullable(T))))), _flowRuntime.default.property("findMany", _flowRuntime.default.function(_flowRuntime.default.param("ids", _flowRuntime.default.array(_flowRuntime.default.union(_flowRuntime.default.string(), _flowRuntime.default.number()))), _flowRuntime.default.return(_flowRuntime.default.ref("Promise", _flowRuntime.default.ref(CursorInterface, _flowRuntime.default.ref(CollectionInterface, T), T))))), _flowRuntime.default.property("take", _flowRuntime.default.function(_flowRuntime.default.param("id", _flowRuntime.default.union(_flowRuntime.default.string(), _flowRuntime.default.number())), _flowRuntime.default.return(_flowRuntime.default.ref("Promise", _flowRuntime.default.nullable(T))))), _flowRuntime.default.property("takeMany", _flowRuntime.default.function(_flowRuntime.default.param("ids", _flowRuntime.default.array(_flowRuntime.default.union(_flowRuntime.default.string(), _flowRuntime.default.number()))), _flowRuntime.default.return(_flowRuntime.default.ref("Promise", _flowRuntime.default.ref(CursorInterface, _flowRuntime.default.ref(CollectionInterface, T), T))))), _flowRuntime.default.property("takeAll", _flowRuntime.default.function(_flowRuntime.default.return(_flowRuntime.default.ref("Promise", _flowRuntime.default.ref(CursorInterface, _flowRuntime.default.ref(CollectionInterface, T), T))))), _flowRuntime.default.property("update", _flowRuntime.default.function(_flowRuntime.default.param("id", _flowRuntime.default.union(_flowRuntime.default.string(), _flowRuntime.default.number())), _flowRuntime.default.param("properties", _flowRuntime.default.ref("object")), _flowRuntime.default.return(_flowRuntime.default.ref("Promise", T)))), _flowRuntime.default.property("override", _flowRuntime.default.function(_flowRuntime.default.param("id", _flowRuntime.default.union(_flowRuntime.default.string(), _flowRuntime.default.number())), _flowRuntime.default.param("aoRecord", T), _flowRuntime.default.return(_flowRuntime.default.ref("Promise", T)))), _flowRuntime.default.property("clone", _flowRuntime.default.function(_flowRuntime.default.param("aoRecord", T), _flowRuntime.default.return(_flowRuntime.default.ref("Promise", T)))), _flowRuntime.default.property("copy", _flowRuntime.default.function(_flowRuntime.default.param("aoRecord", T), _flowRuntime.default.return(_flowRuntime.default.ref("Promise", T)))), _flowRuntime.default.property("includes", _flowRuntime.default.function(_flowRuntime.default.param("id", _flowRuntime.default.union(_flowRuntime.default.string(), _flowRuntime.default.number())), _flowRuntime.default.return(_flowRuntime.default.ref("Promise", _flowRuntime.default.boolean())))), _flowRuntime.default.property("length", _flowRuntime.default.function(_flowRuntime.default.return(_flowRuntime.default.ref("Promise", _flowRuntime.default.number())))));
-});
+export interface CollectionInterface<T> {
+  collectionName(): string;
+  collectionPrefix(): string;
+  collectionFullName(asName: ?string): string;
+  recordHasBeenChanged(asType: string, aoData: object): void;
 
-exports.CollectionInterface = CollectionInterface;
+  generateId(): Promise<string | number>;
+
+  build(properties: object): Promise<T>;
+
+  create(properties: object): Promise<T>;
+
+  push(aoRecord: T): Promise<T>;
+
+  'delete'(id: string | number): Promise<void>;
+
+  destroy(id: string | number): Promise<void>;
+
+  remove(id: string | number): Promise<void>;
+
+  find(id: string | number): Promise<?T>;
+
+  findMany(ids: Array<string | number>): Promise<CursorInterface<CollectionInterface<T>, T>>;
+
+  take(id: string | number): Promise<?T>;
+
+  takeMany(ids: Array<string | number>): Promise<CursorInterface<CollectionInterface<T>, T>>;
+
+  takeAll(): Promise<CursorInterface<CollectionInterface<T>, T>>;
+
+  update(id: string | number, properties: object): Promise<T>;
+
+  override(id: string | number, aoRecord: T): Promise<T>;
+
+  clone(aoRecord: T): Promise<T>;
+
+  copy(aoRecord: T): Promise<T>;
+
+  includes(id: string | number): Promise<boolean>;
+
+  length(): Promise<number>;
+
+  // normalize(ahData: any): Promise<RecordInterface>;
+  //
+  // serialize(aoRecord: RecordInterface, ahOptions: ?object): Promise<any>;
+}

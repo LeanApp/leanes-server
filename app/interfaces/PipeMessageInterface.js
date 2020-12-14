@@ -1,12 +1,3 @@
-"use strict";
-
-var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
-
-exports.__esModule = true;
-exports.PipeMessageInterface = void 0;
-
-var _flowRuntime = _interopRequireDefault(require("flow-runtime"));
-
 // This file is part of LeanES.
 //
 // LeanES is free software: you can redistribute it and/or modify
@@ -21,6 +12,14 @@ var _flowRuntime = _interopRequireDefault(require("flow-runtime"));
 //
 // You should have received a copy of the GNU Lesser General Public License
 // along with LeanES.  If not, see <https://www.gnu.org/licenses/>.
-const PipeMessageInterface = _flowRuntime.default.type("PipeMessageInterface", _flowRuntime.default.object(_flowRuntime.default.property("getType", _flowRuntime.default.function(_flowRuntime.default.return(_flowRuntime.default.string()))), _flowRuntime.default.property("setType", _flowRuntime.default.function(_flowRuntime.default.param("asType", _flowRuntime.default.string()), _flowRuntime.default.return(_flowRuntime.default.void()))), _flowRuntime.default.property("getPriority", _flowRuntime.default.function(_flowRuntime.default.return(_flowRuntime.default.number()))), _flowRuntime.default.property("setPriority", _flowRuntime.default.function(_flowRuntime.default.param("anPriority", _flowRuntime.default.number()), _flowRuntime.default.return(_flowRuntime.default.void()))), _flowRuntime.default.property("getHeader", _flowRuntime.default.function(_flowRuntime.default.return(_flowRuntime.default.ref("object")))), _flowRuntime.default.property("setHeader", _flowRuntime.default.function(_flowRuntime.default.param("aoHeader", _flowRuntime.default.ref("object")), _flowRuntime.default.return(_flowRuntime.default.void()))), _flowRuntime.default.property("getBody", _flowRuntime.default.function(_flowRuntime.default.return(_flowRuntime.default.nullable(_flowRuntime.default.any())))), _flowRuntime.default.property("setBody", _flowRuntime.default.function(_flowRuntime.default.param("aoBody", _flowRuntime.default.nullable(_flowRuntime.default.any())), _flowRuntime.default.return(_flowRuntime.default.void())))));
 
-exports.PipeMessageInterface = PipeMessageInterface;
+export interface PipeMessageInterface {
+  getType(): string;
+  setType(asType: string): void;
+  getPriority(): number;
+  setPriority(anPriority: number): void;
+  getHeader(): object;
+  setHeader(aoHeader: object): void;
+  getBody(): ?any;
+  setBody(aoBody: ?any): void;
+}

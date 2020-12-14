@@ -1,8 +1,3 @@
-"use strict";
-
-exports.__esModule = true;
-exports.default = void 0;
-
 // This file is part of leanes-server.
 //
 // leanes-server is free software: you can redistribute it and/or modify
@@ -17,10 +12,9 @@ exports.default = void 0;
 //
 // You should have received a copy of the GNU Affero General Public License
 // along with leanes-server.  If not, see <https://www.gnu.org/licenses/>.
-var _default = Module => {
+
+export default (Module) => {
   Module.defineTemplate(__filename, (resource, action, aoData) => ({
     success: true
-  }));
-};
-
-exports.default = _default;
+  }))
+}

@@ -1,12 +1,3 @@
-"use strict";
-
-var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
-
-exports.__esModule = true;
-exports.SwaggerEndpointStruct = void 0;
-
-var _flowRuntime = _interopRequireDefault(require("flow-runtime"));
-
 // This file is part of leanes-swagger-addon.
 //
 // leanes-swagger-addon is free software: you can redistribute it and/or modify
@@ -21,6 +12,25 @@ var _flowRuntime = _interopRequireDefault(require("flow-runtime"));
 //
 // You should have received a copy of the GNU Lesser General Public License
 // along with leanes-swagger-addon.  If not, see <https://www.gnu.org/licenses/>.
-const SwaggerEndpointStruct = _flowRuntime.default.type("SwaggerEndpointStruct", _flowRuntime.default.object(_flowRuntime.default.property("tags", _flowRuntime.default.nullable(_flowRuntime.default.array(_flowRuntime.default.string()))), _flowRuntime.default.property("headers", _flowRuntime.default.nullable(_flowRuntime.default.array(_flowRuntime.default.ref("object")))), _flowRuntime.default.property("pathParams", _flowRuntime.default.nullable(_flowRuntime.default.array(_flowRuntime.default.ref("object")))), _flowRuntime.default.property("queryParams", _flowRuntime.default.nullable(_flowRuntime.default.array(_flowRuntime.default.ref("object")))), _flowRuntime.default.property("payload", _flowRuntime.default.nullable(_flowRuntime.default.ref("object"))), _flowRuntime.default.property("responses", _flowRuntime.default.nullable(_flowRuntime.default.array(_flowRuntime.default.ref("object")))), _flowRuntime.default.property("errors", _flowRuntime.default.nullable(_flowRuntime.default.array(_flowRuntime.default.ref("object")))), _flowRuntime.default.property("title", _flowRuntime.default.nullable(_flowRuntime.default.string())), _flowRuntime.default.property("synopsis", _flowRuntime.default.nullable(_flowRuntime.default.string())), _flowRuntime.default.property("isDeprecated", _flowRuntime.default.boolean())));
 
-exports.SwaggerEndpointStruct = SwaggerEndpointStruct;
+export interface SwaggerEndpointStruct {
+  tags: ?Array<string>;
+
+  headers: ?Array<object>;
+
+  pathParams: ?Array<object>;
+
+  queryParams: ?Array<object>;
+
+  payload: ?object;
+
+  responses: ?Array<object>;
+
+  errors: ?Array<object>;
+
+  title: ?string;
+
+  synopsis: ?string;
+
+  isDeprecated: boolean;
+}

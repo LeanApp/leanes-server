@@ -1,105 +1,55 @@
-"use strict";
+// This file is part of leanes-server.
+//
+// leanes-server is free software: you can redistribute it and/or modify
+// it under the terms of the GNU Affero General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// leanes-server is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU Affero General Public License for more details.
+//
+// You should have received a copy of the GNU Affero General Public License
+// along with leanes-server.  If not, see <https://www.gnu.org/licenses/>.
 
-var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+import LeanES from '__LeanES__';
+import FsUtilsAddon from '__FsUtilsAddon__';
+import ConfigurableAddon from '__ConfigurableAddon__';
+import {
+  default as MapperAddon, MigratableModule, loadMigrations
+} from '__MapperAddon__';
+import MongoAddon from '__MongoAddon__';
+import {
+  default as RestfulAddon, TemplatableModule, loadTemplates
+} from '__RestfulAddon__';
+import QueryableAddon from '__QueryableAddon__';
+import SwaggerAddon from '__SwaggerAddon__';
 
-var _interopRequireWildcard = require("@babel/runtime/helpers/interopRequireWildcard");
+const { initialize, meta, nameBy, resolver, constant, plugin, loadFiles } = LeanES.NS;
 
-exports.__esModule = true;
-exports.default = void 0;
+@initialize
+@loadFiles
+@loadTemplates
+@loadMigrations
+@plugin(SwaggerAddon)
+@plugin(QueryableAddon)
+@plugin(TemplatableModule)
+@plugin(RestfulAddon)
+@plugin(MongoAddon)
+@plugin(MigratableModule)
+@plugin(MapperAddon)
+@plugin(ConfigurableAddon)
+@plugin(FsUtilsAddon)
+@resolver(require, name => require(name))
+class ServerApp extends LeanES {
+  @meta static object = {};
+  @constant ROOT = __dirname;
+  @constant MIGRATIONS_ADAPTER = 'MigrationsAdapter';
+  @constant USERS_ADAPTER = 'UsersAdapter';
+  @constant USERS = 'UsersCollection';
+  @constant SESSIONS_ADAPTER = 'SessionsAdapter';
+  @constant SESSIONS = 'SessionsCollection';
+}
 
-var _initializerDefineProperty2 = _interopRequireDefault(require("@babel/runtime/helpers/initializerDefineProperty"));
-
-var _initializerWarningHelper2 = _interopRequireDefault(require("@babel/runtime/helpers/initializerWarningHelper"));
-
-var _applyDecoratedDescriptor2 = _interopRequireDefault(require("@babel/runtime/helpers/applyDecoratedDescriptor"));
-
-var _leanes = _interopRequireDefault(require("@leansdk/leanes"));
-
-var _leanesFsUtilsAddon = _interopRequireDefault(require("@leansdk/leanes-fs-utils-addon"));
-
-var _leanesConfigurableAddon = _interopRequireDefault(require("@leansdk/leanes-configurable-addon"));
-
-var _leanesMapperAddon = _interopRequireWildcard(require("@leansdk/leanes-mapper-addon"));
-
-var _leanesMongoAddon = _interopRequireDefault(require("@leansdk/leanes-mongo-addon"));
-
-var _leanesRestfulAddon = _interopRequireWildcard(require("@leansdk/leanes-restful-addon"));
-
-var _leanesQueryableAddon = _interopRequireDefault(require("@leansdk/leanes-queryable-addon"));
-
-var _leanesSwaggerAddon = _interopRequireDefault(require("@leansdk/leanes-swagger-addon"));
-
-var _dec, _dec2, _dec3, _dec4, _dec5, _dec6, _dec7, _dec8, _dec9, _dec10, _class, _class2, _init, _descriptor, _descriptor2, _descriptor3, _descriptor4, _descriptor5, _descriptor6, _class3, _temp;
-
-const {
-  initialize,
-  meta,
-  nameBy,
-  resolver,
-  constant,
-  plugin,
-  loadFiles
-} = _leanes.default.NS;
-let ServerApp = (_dec = plugin(_leanesSwaggerAddon.default), _dec2 = plugin(_leanesQueryableAddon.default), _dec3 = plugin(_leanesRestfulAddon.TemplatableModule), _dec4 = plugin(_leanesRestfulAddon.default), _dec5 = plugin(_leanesMongoAddon.default), _dec6 = plugin(_leanesMapperAddon.MigratableModule), _dec7 = plugin(_leanesMapperAddon.default), _dec8 = plugin(_leanesConfigurableAddon.default), _dec9 = plugin(_leanesFsUtilsAddon.default), _dec10 = resolver(require, name => require(name)), initialize(_class = loadFiles(_class = (0, _leanesRestfulAddon.loadTemplates)(_class = (0, _leanesMapperAddon.loadMigrations)(_class = _dec(_class = _dec2(_class = _dec3(_class = _dec4(_class = _dec5(_class = _dec6(_class = _dec7(_class = _dec8(_class = _dec9(_class = _dec10(_class = (_class2 = (_temp = _class3 = class ServerApp extends _leanes.default {
-  constructor(...args) {
-    super(...args);
-    (0, _initializerDefineProperty2.default)(this, "ROOT", _descriptor, this);
-    (0, _initializerDefineProperty2.default)(this, "MIGRATIONS_ADAPTER", _descriptor2, this);
-    (0, _initializerDefineProperty2.default)(this, "USERS_ADAPTER", _descriptor3, this);
-    (0, _initializerDefineProperty2.default)(this, "USERS", _descriptor4, this);
-    (0, _initializerDefineProperty2.default)(this, "SESSIONS_ADAPTER", _descriptor5, this);
-    (0, _initializerDefineProperty2.default)(this, "SESSIONS", _descriptor6, this);
-  }
-
-}, _class3.object = {}, _temp), ((0, _applyDecoratedDescriptor2.default)(_class2, "object", [meta], (_init = Object.getOwnPropertyDescriptor(_class2, "object"), _init = _init ? _init.value : undefined, {
-  enumerable: true,
-  configurable: true,
-  writable: true,
-  initializer: function () {
-    return _init;
-  }
-}), _class2), _descriptor = (0, _applyDecoratedDescriptor2.default)(_class2.prototype, "ROOT", [constant], {
-  configurable: true,
-  enumerable: true,
-  writable: true,
-  initializer: function () {
-    return __dirname;
-  }
-}), _descriptor2 = (0, _applyDecoratedDescriptor2.default)(_class2.prototype, "MIGRATIONS_ADAPTER", [constant], {
-  configurable: true,
-  enumerable: true,
-  writable: true,
-  initializer: function () {
-    return 'MigrationsAdapter';
-  }
-}), _descriptor3 = (0, _applyDecoratedDescriptor2.default)(_class2.prototype, "USERS_ADAPTER", [constant], {
-  configurable: true,
-  enumerable: true,
-  writable: true,
-  initializer: function () {
-    return 'UsersAdapter';
-  }
-}), _descriptor4 = (0, _applyDecoratedDescriptor2.default)(_class2.prototype, "USERS", [constant], {
-  configurable: true,
-  enumerable: true,
-  writable: true,
-  initializer: function () {
-    return 'UsersCollection';
-  }
-}), _descriptor5 = (0, _applyDecoratedDescriptor2.default)(_class2.prototype, "SESSIONS_ADAPTER", [constant], {
-  configurable: true,
-  enumerable: true,
-  writable: true,
-  initializer: function () {
-    return 'SessionsAdapter';
-  }
-}), _descriptor6 = (0, _applyDecoratedDescriptor2.default)(_class2.prototype, "SESSIONS", [constant], {
-  configurable: true,
-  enumerable: true,
-  writable: true,
-  initializer: function () {
-    return 'SessionsCollection';
-  }
-})), _class2)) || _class) || _class) || _class) || _class) || _class) || _class) || _class) || _class) || _class) || _class) || _class) || _class) || _class) || _class);
-var _default = ServerApp;
-exports.default = _default;
+export default ServerApp;
